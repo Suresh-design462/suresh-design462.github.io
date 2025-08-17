@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "io.github.suresh_design462.twa",
+        "sha256_cert_fingerprints": ["36:2D:C5:C1:F2:D8:26:1C:09:75:23:89:5C:BC:F2:EA:84:DD:0C:09:00:26:5B:38:DA:0F:92:EF:27:3F:56:12"]
+      }
+    }]
