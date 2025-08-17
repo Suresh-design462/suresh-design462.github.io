@@ -1,0 +1,1123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    
+    <title>InstaNurse - Advanced Medical Calculators</title>
+    <meta name="description" content="All-in-One Clinical Tools for Nurses – Drug, IV, BMI, EDD, Milestones & More!">
+    <meta name="keywords" content="medical calculator, bmi calculator, drug dose, pregnancy calculator, age calculator, tbsa, pediatric milestones, menstrual cycle, period tracker, medinest, health app, pwa">
+    <meta name="author" content="ProNurse Tools">
+
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#005792">
+    <link rel="apple-touch-icon" href="icons/icon-512x512.png">
+    
+     <style>
+        /* New Theme Colors */
+        :root {
+            --primary-color: #0915eb; /* Medium Blue */
+            --secondary-color: #0b8aa3; /* Lighter Blue */
+            --bg-color: #F8F9FA; /* Very Light Gray */
+            --card-bg: #FFFFFF; /* White */
+            --text-color: #343A40; /* Dark Gray */
+            --heading-color: #212529;
+            --light-text-color: #FFFFFF;
+            --border-color: #E9ECEF;
+            --danger-color: #DC3545;
+            --warning-color: #FFC107;
+            --success-color: #28A745;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        
+        /* Original styles for MediNest - updated for new theme */
+        html, body { 
+            width: 100%; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            display: flex; /* Ensure body takes full height for app-container */
+            flex-direction: column;
+        }
+        .app-container { 
+            display: flex; 
+            flex-direction: column; 
+            min-height: 100vh; 
+            width: 100%; 
+            background-color: var(--bg-color); /* Ensure app-container has bg color */
+        }
+        .header, .calculator-header { 
+            flex-shrink: 0; 
+            padding: 10px 20px; 
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color)); /* Updated gradient */
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15); 
+            z-index: 10; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            color: var(--light-text-color); 
+        }
+        .header-main-content { display: flex; flex-direction: column; align-items: flex-start; }
+        .header-title { font-size: 1.5em; font-weight: bold; }
+        .live-datetime { font-size: 0.7em; font-weight: 400; opacity: 0.8; margin-top: -2px; }
+        .language-selector { display: flex; align-items: center; gap: 8px; }
+        .globe-icon { font-size: 1.5em; }
+        #lang-select { padding: 5px 8px; border-radius: 5px; border: 1px solid rgba(255, 255, 255, 0.4); background: transparent; color: var(--light-text-color); cursor: pointer; }
+        #lang-select option { background: var(--secondary-color); color: var(--light-text-color); }
+        .footer { 
+            flex-shrink: 0; 
+            padding: 15px 20px; 
+            background: linear-gradient(180deg, var(--card-bg), var(--border-color)); /* Updated gradient */
+            text-align: center; 
+            font-size: 0.8em; 
+            color: var(--text-color); 
+            border-top: 1px solid var(--border-color); 
+        }
+        .footer p { margin-bottom: 8px; }
+        .footer-links a { color: var(--primary-color); text-decoration: none; margin: 0 10px; font-weight: 500; }
+        .ad-bar { flex-shrink: 0; min-height: 50px; background-color: var(--border-color); display: flex; align-items: center; justify-content: center; color: #adb5bd; font-size: 0.9em; overflow: hidden; }
+        .main-content { flex-grow: 1; display: flex; flex-direction: column; }
+        .calculator-view .main-content { padding: 0; }
+        #home-screen { display: flex; flex-direction: column; flex-grow: 1; }
+        .calculator-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* Responsive grid */
+            grid-auto-rows: 1fr; /* Make rows equal height */
+            gap: 15px; 
+            flex-grow: 1; 
+            padding: 15px; 
+        }
+        .calculator-card { 
+            background: var(--card-bg); 
+            border-radius: 12px; 
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08); 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            cursor: pointer; 
+            transition: all 0.2s ease; 
+            text-decoration: none; 
+            color: var(--text-color); 
+            padding: 10px; 
+            text-align: center; 
+            aspect-ratio: 1 / 1; /* Force square aspect ratio */
+        }
+        .calculator-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15); }
+        .calculator-card .icon { font-size: 2.5em; margin-bottom: 10px; }
+        .calculator-card .name { font-weight: 500; font-size: 1em; }
+        /* Removed .card-tbsa specific grid-column span */
+        .calculator-view { display: none; flex-direction: column; min-height: 100vh; animation: fadeIn 0.5s ease; }
+        .calculator-header { margin-bottom: 0; justify-content: flex-start; }
+        .back-button { background: transparent; border: 1px solid rgba(255, 255, 255, 0.4); width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background-color 0.2s; }
+        .back-button:hover { background: rgba(255, 255, 255, 0.2); }
+        .back-button-icon { width: 10px; height: 10px; border-left: 2px solid var(--light-text-color); border-bottom: 2px solid var(--light-text-color); transform: rotate(45deg); }
+        .calculator-title { font-size: 1.5em; font-weight: 600; flex-grow: 1; text-align: center; margin-right: 40px; color: var(--light-text-color); }
+        .calculator-body { flex-grow: 1; display: flex; flex-direction: column; }
+        .calculator-content { padding: 20px 15px; background: var(--bg-color); flex-grow: 1; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: 500; }
+        .form-group input, .form-group select { width: 100%; padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; font-size: 1em; transition: all 0.2s ease-in-out; }
+        .form-group input:focus, .form-group select:focus { outline: none; border-color: var(--primary-color); }
+        .btn-container { text-align: center; margin-top: 20px; display: flex; gap: 10px; justify-content: center; }
+        .btn { padding: 12px 20px; font-size: 1em; border: none; border-radius: 5px; cursor: pointer; transition: all 0.3s; }
+        .btn-primary { background-color: var(--primary-color); color: var(--light-text-color); }
+        .btn-secondary { background-color: #6c757d; color: var(--light-text-color); }
+        .btn-clear { background-color: var(--danger-color); color: var(--light-text-color); }
+        .result-box { margin-top: 20px; padding: 15px; background-color: #e9f5ff; border-left: 5px solid var(--primary-color); border-radius: 5px; animation: slideInUp 0.5s ease; }
+        .tab-container { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 15px; }
+        .tab-btn { flex: 1; padding: 10px; text-align: center; cursor: pointer; background: var(--card-bg); border: none; font-weight: 500; border-bottom: 3px solid transparent; transition: all 0.2s; }
+        .tab-btn.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+        .tab-content { display: none; }
+        .tab-content.active { display: block; animation: fadeIn 0.4s; }
+        .bmi-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .progress-bar-container { width: 100%; background: #e9ecef; border-radius: 5px; height: 10px; margin-top: 10px; overflow: hidden; }
+        .progress-bar { height: 100%; transition: width 0.5s ease, background-color 0.5s ease; border-radius: 5px; }
+        .tbsa-container { display: flex; flex-direction: column; align-items: center; gap: 25px; }
+        .tbsa-svg { max-width: 240px; width: 100%; height: auto; }
+        .tbsa-svg path { fill: #ccc; stroke: #333; stroke-width: 1.5; cursor: pointer; transition: fill 0.2s; }
+        .tbsa-svg path.selected { fill: var(--danger-color); }
+        .tbsa-controls { text-align: center; width: 100%; }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; animation: fadeIn 0.3s; }
+        .modal-content { background: var(--card-bg); padding: 25px; border-radius: 12px; width: 90%; max-width: 500px; position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.3); max-height: 80vh; overflow-y: auto; animation: slideInUp 0.4s; }
+        .modal-content p { margin-bottom: 1em; line-height: 1.6; }
+        .modal-content h3 { margin-top: 1.2em; margin-bottom: 0.5em; }
+        .modal-close-btn { position: absolute; top: 10px; right: 15px; font-size: 1.8em; font-weight: bold; color: #888; cursor: pointer; border: none; background: none; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes slideInUp { from { transform: translateY(50px) scale(0.95); opacity: 0; } to { transform: translateY(0) scale(1); opacity: 1; } }
+        @media (max-width: 380px) { .bmi-inputs { grid-template-columns: 1fr; } }
+        
+         /* Styles for the Unit Converter (Updated to match screenshot) */
+        #mass-calc-screen .calculator-body {
+            background-color: var(--bg-color);
+            justify-content: flex-start;
+            align-items: center;
+            padding: 20px;
+            padding-top: 30px;
+        }
+
+        #mass-calc-screen .converter-card {
+            background-color: var(--card-bg);
+            color: var(--text-color);
+            padding: 24px;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 420px;
+        }
+
+        #mass-calc-screen .converter-title {
+            color: var(--primary-color);
+            font-size: 2em;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        #mass-calc-screen .converter-title span {
+            color: var(--warning-color);
+            font-size: 1.8em;
+            line-height: 1;
+        }
+        
+        /* CORRECTED LAYOUT: Using CSS Grid to prevent overflow */
+        #mass-calc-screen .form-row {
+            display: grid;
+            grid-template-columns: auto 1fr;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 16px;
+        }
+        
+        #mass-calc-screen .form-row label {
+             font-weight: 500;
+             color: var(--text-color);
+             /* Removed fixed width */
+        }
+
+        #mass-calc-screen .input-field,
+        #mass-calc-screen .select-field {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+            width: 100%; /* Ensure it fills the grid cell */
+        }
+
+        #mass-calc-screen .input-field:focus,
+        #mass-calc-screen .select-field:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(9, 21, 235, 0.2);
+        }
+        
+        #mass-calc-screen .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+            margin-bottom: 16px;
+        }
+
+        #mass-calc-screen .btn {
+            flex: 1;
+            padding: 12px;
+            font-weight: bold;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        #mass-calc-screen .btn-convert {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text-color);
+            box-shadow: 0 4px 15px rgba(9, 21, 235, 0.2);
+        }
+        #mass-calc-screen .btn-convert:hover {
+             transform: translateY(-2px);
+             box-shadow: 0 6px 20px rgba(9, 21, 235, 0.3);
+        }
+
+        #mass-calc-screen .btn-clear-mass {
+            background-color: var(--border-color);
+            color: var(--text-color);
+        }
+        #mass-calc-screen .btn-clear-mass:hover {
+            background-color: #dee2e6;
+        }
+
+        #mass-calc-screen .result-card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            padding: 20px;
+            border-radius: 16px;
+            margin-top: 24px;
+            text-align: center;
+        }
+
+        #mass-calc-screen .result-card h2 {
+            color: var(--primary-color);
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        #mass-calc-screen .result-value {
+             color: var(--success-color);
+             font-size: 2.8em;
+             font-weight: 800;
+             line-height: 1.1;
+             word-break: break-all;
+        }
+
+        #mass-calc-screen .btn-copy {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 16px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 16px;
+            font-size: 0.9em;
+            font-weight: 500;
+        }
+        #mass-calc-screen .btn-copy:hover {
+            background-color: #f1f3f5;
+        }
+
+        #mass-calc-screen .message-box-mass {
+            transition: opacity 0.3s ease-in-out;
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 500;
+            text-align: center;
+            font-size: 0.9em;
+        }
+        #mass-calc-screen .message-box-mass.bg-red-800 { background-color: #FEE2E2; color: #B91C1C; }
+        #mass-calc-screen .message-box-mass.bg-green-800 { background-color: #D1FAE5; color: #047857; }
+        #mass-calc-screen .message-box-mass.bg-blue-800 { background-color: #DBEAFE; color: #1D4ED8; }
+
+        @keyframes resultFadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-result {
+            animation: resultFadeIn 0.4s ease-out forwards;
+        }
+
+        /* --- STYLES FOR PREGNANCY CALCULATOR --- */
+        #preg-calc-screen .calculator-content,
+        #milestone-calc-screen .calculator-content {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        #preg-calc-screen .input-card, 
+        #preg-calc-screen .result-card-main, 
+        #preg-calc-screen .result-card-grid, 
+        #preg-calc-screen .result-card-timeline,
+        #milestone-calc-screen .input-card {
+            background-color: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+        }
+
+        #edd-result-container,
+        #milestone-result-container {
+            display: none;
+            flex-direction: column;
+            gap: 20px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .result-card-main {
+            text-align: center;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: var(--light-text-color);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+        }
+        .result-card-main .label {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+        .result-card-main .value {
+            font-size: 2em;
+            font-weight: 700;
+            margin-top: 5px;
+        }
+        .progress-section .label { font-size: 0.9em; margin-bottom: 8px; }
+        .pregnancy-progress-bar-container { width: 100%; background-color: var(--border-color); border-radius: 50px; height: 12px; overflow: hidden; }
+        .pregnancy-progress-bar { height: 100%; background: linear-gradient(90deg, var(--warning-color), var(--success-color)); border-radius: 50px; transition: width 0.8s ease-out; width: 0%; }
+        .progress-section .gestational-age { margin-top: 10px; font-weight: 500; }
+        .result-card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .info-item { background-color: var(--bg-color); padding: 15px; border-radius: 12px; text-align: center; }
+        .info-item .icon { font-size: 1.8em; margin-bottom: 5px; }
+        .info-item .label { font-size: 0.8em; color: #6c757d; }
+        .info-item .value { font-size: 1.1em; font-weight: 600; color: var(--text-color); }
+        .result-card-timeline .timeline-item { display: flex; align-items: center; gap: 15px; padding: 10px 0; }
+        .result-card-timeline .timeline-item:not(:last-child) { border-bottom: 1px solid var(--border-color); }
+        .timeline-item .icon { font-size: 1.5em; background-color: var(--bg-color); color: var(--primary-color); border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .timeline-item .label { font-weight: 500; }
+        .timeline-item .date { font-size: 0.9em; color: #6c757d; }
+        
+        /* --- NEW STYLES FOR MILESTONE CALCULATOR --- */
+        #milestone-calc-screen .age-display-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+            text-align: center;
+        }
+        #milestone-calc-screen .age-display-card .label { font-size: 1em; color: #6c757d; }
+        #milestone-calc-screen .age-display-card .value { font-size: 1.8em; font-weight: 700; color: var(--primary-color); margin-top: 5px;}
+        
+        #milestone-calc-screen .milestone-card {
+            background: var(--card-bg);
+            padding: 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.07);
+        }
+        #milestone-calc-screen .milestone-title {
+            font-size: 1.3em;
+            font-weight: 600;
+            margin-bottom: 15px;
+            color: var(--heading-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 8px;
+        }
+        #milestone-calc-screen .milestone-category {
+            font-size: 1.1em;
+            font-weight: 600;
+            margin-top: 15px;
+            margin-bottom: 8px;
+            color: var(--secondary-color);
+        }
+        #milestone-calc-screen .milestone-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        #milestone-calc-screen .milestone-list li {
+            padding: 8px 0 8px 25px;
+            position: relative;
+            border-bottom: 1px solid var(--border-color);
+            line-height: 1.5;
+        }
+        #milestone-calc-screen .milestone-list li:last-child {
+            border-bottom: none;
+        }
+        #milestone-calc-screen .milestone-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--success-color);
+            font-weight: bold;
+        }
+
+        #milestone-calc-screen .red-flags-card {
+            background-color: #FFF9C4; /* Light yellow */
+            padding: 20px;
+            border-radius: 16px;
+            border-left: 5px solid var(--danger-color);
+        }
+        #milestone-calc-screen .red-flags-card .milestone-title {
+            color: var(--danger-color);
+            border-bottom-color: var(--danger-color);
+        }
+         #milestone-calc-screen .red-flags-card .milestone-list li::before {
+            content: '⚠️';
+        }
+        
+        /* --- STYLES FOR MENSTRUAL CYCLE CALCULATOR --- */
+        #menstrual-calc-screen {
+            --primary-color-mens: #6a5acd; /* SlateBlue */
+            --secondary-color-mens: #f0e6ff; /* Lavender */
+            --text-color-mens: #333;
+            --bg-color-mens: #ffffff;
+            --highlight-color: #ff69b4; /* HotPink for ovulation */
+            --fertile-color: #4682b4;  /* SteelBlue for fertile window */
+            --current-phase-color: #20b2aa; /* LightSeaGreen */
+            --conception-color: #e53935; /* Red for peak fertility */
+            --doctor-info-bg: #fff9e6; /* Light Yellow */
+            --doctor-info-border: #ffd700; /* Gold */
+            --symptom-bg: #e6f7ff;
+            --symptom-border: #91d5ff;
+        }
+
+        #menstrual-calc-screen .calculator-content {
+            background-color: #f4f7f6;
+            display: flex;
+            justify-content: flex-start; /* Align content to the top */
+            align-items: center; /* Center horizontally */
+            flex-direction: column; /* Stack items vertically */
+            padding: 20px 10px; /* Adjust padding */
+            color: var(--text-color-mens);
+            box-sizing: border-box;
+            overflow-y: auto; /* Allow scrolling */
+        }
+
+        #menstrual-calc-screen .calculator-container {
+            background-color: var(--bg-color-mens);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+            transition: all 0.3s ease;
+            margin-bottom: 20px; /* Space at the bottom */
+        }
+        
+        #menstrual-calc-screen .calculator-container h1 {
+            color: var(--primary-color-mens);
+            margin-bottom: 25px;
+            font-size: 1.6rem;
+        }
+        
+        #menstrual-calc-screen .input-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+
+        #menstrual-calc-screen .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        #menstrual-calc-screen .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        #menstrual-calc-screen .input-group input:focus {
+            outline: none;
+            border-color: var(--primary-color-mens);
+            box-shadow: 0 0 5px rgba(106, 90, 205, 0.2);
+        }
+        
+        #menstrual-calc-screen .results-section.hidden {
+            display: none;
+        }
+
+        #menstrual-calc-screen .results-section {
+            margin-top: 25px;
+            text-align: left;
+            padding: 20px;
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #menstrual-calc-screen #results {
+             background-color: var(--secondary-color-mens);
+        }
+        
+        #menstrual-calc-screen .result-item {
+            padding: 12px 0;
+            border-bottom: 1px solid #dcd0ff;
+        }
+        
+        #menstrual-calc-screen .result-item:last-child {
+            border-bottom: none;
+        }
+
+        #menstrual-calc-screen .result-item strong {
+            display: block;
+            font-size: 1rem;
+            color: var(--primary-color-mens);
+            margin-bottom: 4px;
+        }
+        
+        #menstrual-calc-screen .result-item span {
+            font-weight: 500;
+            font-size: 1rem;
+        }
+        
+        #menstrual-calc-screen .highlight-ovulation { color: var(--highlight-color); font-weight: 600; }
+        #menstrual-calc-screen .highlight-fertile { color: var(--fertile-color); font-weight: 600; }
+        #menstrual-calc-screen .highlight-current { color: var(--current-phase-color); font-weight: 600; }
+        #menstrual-calc-screen .highlight-conception { color: var(--conception-color); font-weight: 600; }
+
+        #menstrual-calc-screen #symptom-tracker {
+            background-color: var(--symptom-bg);
+            border: 1px solid var(--symptom-border);
+        }
+        
+        #menstrual-calc-screen #symptom-tracker h2, 
+        #menstrual-calc-screen #cycle-history h2, 
+        #menstrual-calc-screen #doctor-info h2, 
+        #menstrual-calc-screen #conception-tips h2,
+        #menstrual-calc-screen #educational-tips h2 {
+            margin-top: 0;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+        }
+        #menstrual-calc-screen #symptom-tracker h2 { color: #0050b3; }
+        #menstrual-calc-screen #cycle-history h2 { color: var(--primary-color-mens); }
+        #menstrual-calc-screen #doctor-info h2 { color: #c78c06; }
+        #menstrual-calc-screen #conception-tips h2 { color: var(--conception-color); }
+        
+        #menstrual-calc-screen .symptom-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        #menstrual-calc-screen .symptom-item {
+            display: flex;
+            align-items: center;
+            background: #fff;
+            padding: 8px 12px;
+            border-radius: 20px;
+            border: 1px solid #d9d9d9;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        #menstrual-calc-screen .symptom-item input { margin-right: 8px; }
+        #menstrual-calc-screen .symptom-item:hover { border-color: var(--primary-color-mens); }
+
+        #menstrual-calc-screen #cycle-history {
+            background-color: #fafafa;
+            border: 1px solid #e8e8e8;
+        }
+        #menstrual-calc-screen #history-list { list-style-type: none; padding: 0; font-size: 0.9rem; }
+        #menstrual-calc-screen #history-list li { padding: 8px 0; border-bottom: 1px solid #f0f0f0; }
+        #menstrual-calc-screen #history-list li:last-child { border-bottom: none; }
+
+        #menstrual-calc-screen #doctor-info {
+            background-color: var(--doctor-info-bg);
+            border: 1px solid var(--doctor-info-border);
+        }
+
+        #menstrual-calc-screen #doctor-info ul { padding-left: 20px; margin: 0; font-size: 0.9rem; }
+        #menstrual-calc-screen #doctor-info li { margin-bottom: 8px; }
+
+        #menstrual-calc-screen #educational-tips {
+            background-color: #f6ffed;
+            border: 1px solid #b7eb8f;
+        }
+        #menstrual-calc-screen #educational-tips h2 { color: #389e0d; }
+        #menstrual-calc-screen #tip-content { font-size: 0.9rem; }
+
+        #menstrual-calc-screen #conception-tips {
+            background-color: #ffebee;
+            border: 1px solid #ffcdd2;
+        }
+
+        #menstrual-calc-screen .disclaimer {
+            font-size: 0.75rem;
+            color: #888;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        @media (max-width: 640px) {
+            .calculator-grid {
+                grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            }
+             #menstrual-calc-screen .calculator-container { padding: 20px; }
+        }
+    </style>
+     <!-- Tailwind CSS CDN (Ensure this is loaded for the new converter's styles) -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+   <div id="app-container" class="app-container">
+        <!-- Home Screen -->
+        <div id="home-screen"><header class="header"><div class="header-main-content"><span class="header-title" data-lang-key="appName"></span><span id="live-datetime" class="live-datetime"></span></div><div class="language-selector"><span class="globe-icon"></span><select id="lang-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="ta">தமிழ்</option><option value="te">తెలుగు</option><option value="kn">ಕನ್ನಡ</option><option value="gu">ગુજરાતી</option><option value="pa">ਪੰਜਾਬੀ</option><option value="mr">मराठी</option><option value="raj">राजस्थानी</option></select></div></header><div class="ad-bar"></div><main class="main-content"><div class="calculator-grid"><a href="#drug" class="calculator-card" data-screen="drug-calc-screen"><div class="icon">💊💉</div><div class="name" data-lang-key="drug_calc"></div></a><a href="#bmi" class="calculator-card" data-screen="bmi-calc-screen"><div class="icon">⚖️</div><div class="name" data-lang-key="bmi_calc"></div></a><a href="#age" class="calculator-card" data-screen="age-calc-screen"><div class="icon">📅</div><div class="name" data-lang-key="age_calc"></div></a><a href="#preg" class="calculator-card" data-screen="preg-calc-screen"><div class="icon">🤰</div><div class="name" data-lang-key="preg_calc"></div></a>
+            <a href="#tbsa" class="calculator-card" data-screen="tbsa-calc-screen"><div class="icon">🔥</div><div class="name" data-lang-key="tbsa_calc"></div></a>
+            <a href="#mass" class="calculator-card" data-screen="mass-calc-screen"><div class="icon">⚛️</div><div class="name" data-lang-key="mass_calc"></div></a>
+            <a href="#milestone" class="calculator-card" data-screen="milestone-calc-screen"><div class="icon">👶</div><div class="name" data-lang-key="milestone_calc"></div></a>
+            <!-- NEW MENSTRUAL CYCLE CARD -->
+            <a href="#menstrual" class="calculator-card" data-screen="menstrual-calc-screen">
+                <div class="icon">🩸</div>
+                <div class="name" data-lang-key="menstrual_calc"></div>
+            </a>
+            </div></main><div class="ad-bar"></div><footer class="footer"><p data-lang-key="footer_copyright"></p><div class="footer-links"><a href="#" id="privacy-link" data-lang-key="privacy_policy"></a><a href="#" id="terms-link" data-lang-key="terms_conditions"></a></div></footer></div>
+        <!-- Drug Calculator -->
+        <div id="drug-calc-screen" class="calculator-view"><header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="drug_calc"></h2></header><div class="calculator-body"><div class="ad-bar"></div><div class="calculator-content"><div class="tab-container" id="drug-calc-tabs"><button class="tab-btn active" data-tab="dose-calc-content" data-lang-key="dose_calc_tab"></button><button class="tab-btn" data-tab="fluid-calc-content" data-lang-key="fluid_calc_tab"></button></div><div id="dose-calc-content" class="tab-content active"><div class="form-group"><label for="drug-d" data-lang-key="drug_d_label"></label><input type="number" id="drug-d" placeholder="e.g., 500 mg"></div><div class="form-group"><label for="drug-h" data-lang-key="drug_h_label"></label><input type="number" id="drug-h" placeholder="e.g., 1000 mg"></div><div class="form-group"><label for="drug-v" data-lang-key="drug_v_label"></label><input type="number" id="drug-v" placeholder="e.g., 10 mL"></div><div class="btn-container"><button class="btn btn-primary" id="calc-dose-btn" data-lang-key="calculate"></button><button class="btn btn-secondary" id="reset-dose-btn" data-lang-key="reset"></button></div><div class="result-box" id="dose-result" style="display:none;"></div></div><div id="fluid-calc-content" class="tab-content"><div class="tab-container" id="fluid-calc-tabs"><button class="tab-btn active" data-tab="mlhr-calc-content" data-lang-key="mlhr_tab"></button><button class="tab-btn" data-tab="dropmin-calc-content" data-lang-key="dropmin_tab"></button></div><div id="mlhr-calc-content" class="tab-content active"><div class="form-group"><label for="fluid-volume-mlhr" data-lang-key="volume_ml"></label><input type="number" id="fluid-volume-mlhr" placeholder="e.g., 1000"></div><div class="form-group"><label for="fluid-time-hr" data-lang-key="time_hr"></label><input type="number" id="fluid-time-hr" placeholder="e.g., 8"></div><div class="btn-container"><button class="btn btn-primary" id="calc-mlhr-btn" data-lang-key="calculate"></button><button class="btn btn-secondary" id="reset-mlhr-btn" data-lang-key="reset"></button></div></div><div id="dropmin-calc-content" class="tab-content"><div class="form-group"><label for="fluid-volume-drop" data-lang-key="volume_ml"></label><input type="number" id="fluid-volume-drop" placeholder="e.g., 1000"></div><div class="form-group"><label for="fluid-time-min" data-lang-key="time_min"></label><input type="number" id="fluid-time-min" placeholder="e.g., 480"></div><div class="form-group"><label for="drop-factor" data-lang-key="drop_factor"></label><input type="number" id="drop-factor" placeholder="e.g., 15"></div><div class="btn-container"><button class="btn btn-primary" id="calc-dropmin-btn" data-lang-key="calculate"></button><button class="btn btn-secondary" id="reset-dropmin-btn" data-lang-key="reset"></button></div></div><div class="result-box" id="fluid-result" style="display:none;"></div></div></div><div class="ad-bar"></div></div></div>
+         <!-- BMI Calculator -->
+        <div id="bmi-calc-screen" class="calculator-view"><header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="bmi_calc"></h2></header><div class="calculator-body"><div class="ad-bar"></div><div class="calculator-content"><div class="bmi-inputs"><div class="form-group"><label data-lang-key="gender"></label><select id="bmi-gender"><option value="male" data-lang-key="male"></option><option value="female" data-lang-key="female"></option></select></div><div class="form-group"><label for="bmi-age" data-lang-key="age_years"></label><input type="number" id="bmi-age" placeholder="e.g., 25"></div><div class="form-group"><label for="bmi-height" data-lang-key="height_cm"></label><input type="number" id="bmi-height" placeholder="e.g., 175"></div><div class="form-group"><label for="bmi-weight" data-lang-key="weight_kg"></label><input type="number" id="bmi-weight" placeholder="e.g., 70"></div></div><div class="btn-container"><button class="btn btn-primary" id="calc-bmi-btn" data-lang-key="calculate"></button><button class="btn btn-secondary" id="reset-bmi-btn" data-lang-key="reset"></button></div><div class="result-box" id="bmi-result" style="display:none;"><p><span data-lang-key="your_bmi"></span> <strong id="bmi-value"></strong></p><p><span data-lang-key="category"></span> <strong id="bmi-category"></strong></p><div class="progress-bar-container"><div class="progress-bar" id="bmi-progress-bar"></div></div></div></div><div class="ad-bar"></div></div></div>
+         <!-- Age Calculator -->
+        <div id="age-calc-screen" class="calculator-view"><header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="age_calc"></h2></header><div class="calculator-body"><div class="ad-bar"></div><div class="calculator-content"><div class="form-group"><label for="dob" data-lang-key="dob"></label><input type="date" id="dob"></div><div class="btn-container"><button class="btn btn-primary" id="calc-age-btn" data-lang-key="calculate"></button><button class="btn btn-secondary" id="reset-age-btn" data-lang-key="reset"></button></div><div class="result-box" id="age-result" style="display:none;"><p><strong data-lang-key="your_age"></strong></p><p id="age-output"></p><p id="next-birthday-output"></p></div></div><div class="ad-bar"></div></div></div>
+        <!-- Pregnancy Calculator -->
+        <div id="preg-calc-screen" class="calculator-view"><header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="preg_calc"></h2></header><div class="calculator-body"><div class="ad-bar"></div><div class="calculator-content"><div class="input-card"><div class="form-group"><label for="lmp" data-lang-key="lmp_date"></label><input type="date" id="lmp"></div><div class="btn-container"><button class="btn btn-primary" id="calc-edd-btn" data-lang-key="calculate"></button><button class="btn btn-secondary" id="reset-edd-btn" data-lang-key="reset"></button></div></div><div id="edd-result-container"><div class="result-card-main"><div class="label" data-lang-key="edd_title"></div><div id="edd-value" class="value"></div></div><div class="result-card-grid"><div class="progress-section" style="grid-column: 1 / -1;"><div class="label" data-lang-key="progress_label"></div><div class="pregnancy-progress-bar-container"><div id="pregnancy-progress-bar" class="pregnancy-progress-bar"></div></div><div id="gestational-age-value" class="gestational-age"></div></div><div class="info-item"><div class="icon">🗓️</div><div class="label" data-lang-key="current_trimester"></div><div id="trimester-value" class="value"></div></div><div class="info-item"><div class="icon">💕</div><div class="label" data-lang-key="conception_date"></div><div id="conception-date-value" class="value"></div></div><div class="info-item" style="grid-column: 1 / -1;"><div class="icon">⏳</div><div class="label" data-lang-key="days_remaining"></div><div id="days-remaining-value" class="value"></div></div></div><div class="result-card-timeline"><div class="timeline-item"><div class="icon">1️⃣</div><div><div class="label" data-lang-key="end_of_first_trimester"></div><div id="first-trimester-end-date" class="date"></div></div></div><div class="timeline-item"><div class="icon">2️⃣</div><div><div class="label" data-lang-key="end_of_second_trimester"></div><div id="second-trimester-end-date" class="date"></div></div></div></div></div></div><div class="ad-bar"></div></div></div>
+        <!-- TBSA Calculator -->
+        <div id="tbsa-calc-screen" class="calculator-view"><header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="tbsa_calc"></h2></header><div class="calculator-body"><div class="ad-bar"></div><div class="calculator-content"><div class="tbsa-container"><svg class="tbsa-svg" id="tbsa-adult-svg" viewBox="-20 -10 260 340" xmlns="http://www.w3.org/2000/svg"><g id="front-view"><path d="M50,5 A25,25 0 1,1 50,55 A25,25 0 0,1 50,5" data-percent="4.5"/><path d="M30,60 h40 l10,100 h-60 z" data-percent="18"/><path d="M30,65 l-20,70 l10,5 z" data-percent="4.5"/><path d="M70,65 l20,70 l-10,5 z" data-percent="4.5"/><path d="M45,160 h10 v10 h-10 z" data-percent="1"/><path d="M20,170 h25 l-5,120 h-20 z" data-percent="9"/><path d="M55,170 h25 l5,120 h-20 z" data-percent="9"/></g><g id="back-view" transform="translate(120, 0)"><path d="M50,5 A25,25 0 1,1 50,55 A25,25 0 0,1 50,5" data-percent="4.5"/><path d="M30,60 h40 l10,100 h-60 z" data-percent="18"/><path d="M30,65 l-20,70 l10,5 z" data-percent="4.5"/><path d="M70,65 l20,70 l-10,5 z" data-percent="4.5"/><path d="M20,170 h25 l-5,120 h-20 z" data-percent="9"/><path d="M55,170 h25 l5,120 h-20 z" data-percent="9"/></g></svg><div class="tbsa-controls"><div class="result-box" style="margin-top:0;"><h3 data-lang-key="total_tbsa"></h3><p style="font-size: 2em; font-weight: bold;"><span id="tbsa-total">0.0</span>%</p></div><div class="btn-container"><button class="btn btn-clear" id="clear-tbsa-btn" data-lang-key="clear"></button></div></div></div></div><div class="ad-bar"></div></div></div>
+         <!-- Unit Converter Screen -->
+        <div id="mass-calc-screen" class="calculator-view"><header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="mass_calc"></h2></header><div class="calculator-body"><main class="converter-card"><h1 class="converter-title">Unit Converter<span>⚡</span></h1><section class="inputs-section"><div class="form-row"><label for="inputValue">Value to Convert:</label><input type="number" id="inputValue" class="input-field" placeholder="Enter value" min="0" step="any"></div><div class="form-row"><label for="fromUnit">From Unit:</label><select id="fromUnit" class="select-field"><option value="mg">Milligrams (mg)</option><option value="mcg">Micrograms (mcg)</option><option value="gm">Grams (gm)</option></select></div><div class="form-row"><label for="toUnit">To Unit:</label><select id="toUnit" class="select-field"><option value="mcg">Micrograms (mcg)</option><option value="mg" selected>Milligrams (mg)</option><option value="gm">Grams (gm)</option></select></div></section><section class="action-buttons"><button id="convertButton" class="btn btn-convert">Convert</button><button id="clearButton" class="btn btn-clear-mass">Clear</button></section><section class="result-card"><h2>Converted Result:</h2><p id="resultDisplay" class="result-value animate-result">0 <span id="resultUnit">mcg</span></p><button id="copyButton" class="btn btn-copy"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2v2"/></svg> Copy Result</button></section><div id="messageBox" class="message-box-mass hidden" role="alert"></div></main><div class="ad-bar"></div></div></div>
+        
+        <!-- NEW PEDIATRIC MILESTONE CALCULATOR -->
+        <div id="milestone-calc-screen" class="calculator-view">
+            <header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="milestone_calc"></h2></header>
+            <div class="calculator-body">
+                <div class="ad-bar"></div>
+                <div class="calculator-content">
+                    <div class="input-card">
+                        <div class="form-group">
+                            <label for="milestone-dob" data-lang-key="child_dob"></label>
+                            <input type="date" id="milestone-dob">
+                        </div>
+                        <div class="btn-container">
+                            <button class="btn btn-primary" id="calc-milestone-btn" data-lang-key="check_milestones"></button>
+                            <button class="btn btn-secondary" id="reset-milestone-btn" data-lang-key="reset"></button>
+                        </div>
+                    </div>
+                    
+                    <div id="milestone-result-container">
+                        <!-- Results will be dynamically inserted here by JavaScript -->
+                    </div>
+                </div>
+                <div class="ad-bar"></div>
+            </div>
+        </div>
+
+        <!-- NEW MENSTRUAL CYCLE CALCULATOR -->
+        <div id="menstrual-calc-screen" class="calculator-view">
+            <header class="calculator-header"><button class="back-button"><div class="back-button-icon"></div></button><h2 class="calculator-title" data-lang-key="menstrual_calc"></h2></header>
+            <div class="calculator-body">
+                <div class="ad-bar"></div>
+                <div class="calculator-content">
+                     <div class="calculator-container">
+                        <h1 data-lang-key="menstrual_title">Menstrual Cycle & Health Tracker</h1>
+                        
+                        <div class="input-group">
+                            <label for="last-period-date" data-lang-key="last_period_label">First Day of Your Last Period:</label>
+                            <input type="date" id="last-period-date" required>
+                        </div>
+
+                        <div class="input-group">
+                            <label for="cycle-length" data-lang-key="cycle_length_label">Average Cycle Length (in days):</label>
+                            <input type="number" id="cycle-length" value="28" min="20" max="45" required>
+                        </div>
+
+                        <div class="btn-container">
+                             <button id="calculate-btn" class="btn btn-primary" data-lang-key="calculate_update_btn" style="flex:2;">Calculate & Update</button>
+                             <button id="reset-menstrual-btn" class="btn btn-secondary" data-lang-key="reset" style="flex:1;">Reset</button>
+                        </div>
+
+                        <div id="results" class="results-section hidden">
+                            <!-- Results will be injected here -->
+                        </div>
+                        
+                        <div id="conception-tips" class="results-section hidden">
+                            <h2 data-lang-key="conception_title">❤️ Best Days for Intercourse to Conceive</h2>
+                            <p data-lang-key="conception_desc">Your chances of getting pregnant are highest during your peak fertile window. For this cycle, that is:</p>
+                            <p class="highlight-conception" id="peak-fertility-dates" style="font-size: 1.1rem; text-align: center; margin-top: 10px;"></p>
+                        </div>
+
+                        <div id="educational-tips" class="results-section hidden">
+                            <h2 data-lang-key="health_tip_title">💡 Health Tip for Your Current Phase</h2>
+                            <p id="tip-content"></p>
+                        </div>
+                        
+                        <div id="symptom-tracker" class="results-section hidden">
+                            <h2 data-lang-key="symptom_log_title">📝 Log Today's Symptoms & Mood</h2>
+                            <div class="symptom-grid">
+                                <!-- Symptoms will be injected here -->
+                            </div>
+                        </div>
+
+                        <div id="cycle-history" class="results-section hidden">
+                            <h2 data-lang-key="cycle_history_title">📜 Recent Cycle History</h2>
+                            <ul id="history-list">
+                                <!-- History will be injected here -->
+                            </ul>
+                        </div>
+
+                        <div id="doctor-info" class="results-section hidden">
+                            <h2 data-lang-key="consult_doctor_title_mens">👩‍⚕️ When to Consult a Doctor</h2>
+                            <p data-lang-key="consult_doctor_desc_mens">Consult a healthcare professional if you experience persistent irregularities, such as:</p>
+                            <ul>
+                                <li data-lang-key="doctor_cond_1">Your periods suddenly stop for more than 90 days.</li>
+                                <li data-lang-key="doctor_cond_2">Your cycles become very erratic after being regular.</li>
+                                <li data-lang-key="doctor_cond_3">Your period lasts longer than 7 days or is extremely heavy.</li>
+                                <li data-lang-key="doctor_cond_4">Your cycles are consistently shorter than 21 days or longer than 35 days.</li>
+                                <li data-lang-key="doctor_cond_5">You experience severe pain, cramping, or nausea during your period.</li>
+                            </ul>
+                        </div>
+                        
+                        <p class="disclaimer" data-lang-key="disclaimer_mens">
+                            This tracker provides estimations and is not a substitute for professional medical advice.
+                        </p>
+                    </div>
+                </div>
+                <div class="ad-bar"></div>
+            </div>
+        </div>
+
+        <!-- Modals -->
+        <div id="policy-modal" class="modal-overlay"><div class="modal-content"><button class="modal-close-btn">×</button><h2 id="modal-title"></h2><div id="modal-text"></div></div></div>
+        <div id="rate-us-modal" class="modal-overlay"><div class="modal-content" style="text-align: center;"><button class="modal-close-btn">×</button><h2 data-lang-key="rate_us_title"></h2><p data-lang-key="rate_us_desc"></p><br><button class="btn btn-primary" id="rate-now-btn" data-lang-key="rate_now"></button></div></div>
+    </div>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const translations = {
+            'en': { appName: 'InstaNurse', adSpace: '', footer_copyright: '2025@InstaNurse: All Rights Reserved.', privacy_policy: 'Privacy Policy', terms_conditions: 'Terms & Condition', drug_calc: 'Drug Calculator', bmi_calc: 'BMI Calculator', age_calc: 'Age Calculator', preg_calc: 'Pregnancy EDD', tbsa_calc: 'TBSA Burn Calculator', mass_calc: 'Unit Converter', milestone_calc: 'Pediatric Milestones', menstrual_calc: 'Menstrual Cycle', calculate: 'Calculate', reset: 'Reset', clear: 'Clear', dose_calc_tab: 'Dose', fluid_calc_tab: 'Fluid', drug_d_label: 'D (Desired Dose)', drug_h_label: 'H (Stock Dose)', drug_v_label: 'V (Stock Volume)', mlhr_tab: 'mL/hr', dropmin_tab: 'Drop/min', volume_ml: 'Volume (mL)', time_hr: 'Time (hr)', time_min: 'Time (min)', drop_factor: 'Drop Factor (gtt/mL)', gender: 'Gender', male: 'Male', 'female': 'Female', age_years: 'Age (years)', height_cm: 'Height (cm)', weight_kg: 'Weight (kg)', your_bmi: 'Your BMI is:', category: 'Category:', underweight: 'Underweight', normal_weight: 'Normal Weight', overweight: 'Overweight', obesity: 'Obesity', dob: 'Date of Birth', your_age: 'Your Age is:', next_birthday_in: 'Next Birthday 🎂 in', years: 'Years', months: 'Months', days: 'Days', lmp_date: 'First Day of Last Menstrual Period', edd_title: 'Estimated Due Date', progress_label: 'Pregnancy Progress', current_trimester: 'Current Trimester', conception_date: 'Est. Conception Date', days_remaining: 'Days Remaining', end_of_first_trimester: 'End of 1st Trimester', end_of_second_trimester: 'End of 2nd Trimester', weeks: 'weeks', day: 'day', total_tbsa: 'Total TBSA', rate_us_title: 'Rate InstaNurse! ⭐⭐⭐⭐⭐', rate_us_desc: 'If you enjoy this app, please take a moment to rate it.', rate_now: 'Rate Now', privacy_title: 'Privacy Policy', privacy_text: `<h3>Our Commitment to Your Privacy</h3><p>Your privacy is paramount. InstaNurse is designed as a secure, on-device tool. We do not collect, record, store, or transmit any of your personal data or health information.</p><h3>1. Information We Do Not Collect</h3><p>InstaNurse does NOT collect, save, or have access to:<ul><li><strong>Personal Health Information (PHI):</strong> Any data you enter (weight, height, age, etc.) is processed exclusively on your device and is never sent to our servers.</li><li><strong>Personal Identification Information:</strong> We do not ask for your name, email, or any other personally identifiable information.</li><li><strong>Location or Usage Data:</strong> We do not track your location or how you use the app.</li></ul></p><h3>2. How Your Data is Used</h3><p>The data you enter exists only for the immediate purpose of performing the calculation you requested. It is permanently discarded when you close the app or reset the calculator.</p><h3>3. Third-Party Services (Advertising)</h3><p>To keep the App free, we may display ads from third-party networks. These networks may use non-personal identifiers to serve relevant ads but do not receive any of your health data from our App.</p><h3>4. Contact Us</h3><p>If you have any questions, please contact us at didels940@gmail.com.</p>`, terms_title: 'Terms & Conditions', terms_text: `<h3>1. Medical Disclaimer</h3><p><strong>For Informational Purposes Only:</strong> The calculations and information provided by InstaNurse are for informational and educational purposes only. They are NOT a substitute for professional medical advice, diagnosis, or treatment.</p><p><strong>Always Seek Professional Help:</strong> Always consult a qualified health provider with any questions regarding a medical condition. Never disregard professional medical advice because of something you have calculated on this App.</p><h3>2. User Responsibility</h3><p>You are solely responsible for any decisions or actions taken based on the information from this App. All calculations should be verified by a qualified medical professional before clinical use.</p><h3>3. Limitation of Liability</h3><p>In no event shall InstaNurse be liable for any damages resulting from the use of this Service. Your use of the App is at your sole risk.</p>`, child_dob: "Child's Date of Birth", check_milestones: 'Check Milestones', current_age: 'Current Age', milestone_group_title: 'Expected Milestones for {age_range}', gross_motor: 'Gross Motor', fine_motor: 'Fine Motor', social_language: 'Social & Language', cognitive: 'Cognitive', consult_doctor_title: 'When to Consult a Doctor (Red Flags)', over_age_limit: 'This calculator is for children up to 24 months old.', month: 'month', menstrual_title: 'Menstrual Cycle & Health Tracker', last_period_label: 'First Day of Your Last Period:', cycle_length_label: 'Average Cycle Length (in days):', calculate_update_btn: 'Calculate & Update', conception_title: '❤️ Best Days for Intercourse to Conceive', conception_desc: 'Your chances of getting pregnant are highest during your peak fertile window. For this cycle, that is:', health_tip_title: '💡 Health Tip for Your Current Phase', symptom_log_title: "📝 Log Today's Symptoms & Mood", cycle_history_title: '📜 Recent Cycle History', consult_doctor_title_mens: '👩‍⚕️ When to Consult a Doctor', consult_doctor_desc_mens: 'Consult a healthcare professional if you experience persistent irregularities, such as:', doctor_cond_1: 'Your periods suddenly stop for more than 90 days.', doctor_cond_2: 'Your cycles become very erratic after being regular.', doctor_cond_3: 'Your period lasts longer than 7 days or is extremely heavy.', doctor_cond_4: 'Your cycles are consistently shorter than 21 days or longer than 35 days.', doctor_cond_5: 'You experience severe pain, cramping, or nausea during your period.', disclaimer_mens: 'This tracker provides estimations and is not a substitute for professional medical advice.' },
+            'hi': { appName: 'इंस्टा नर्स', adSpace: '', footer_copyright: '२०२५@इंस्टा नर्स: सर्वाधिकार सुरक्षित।', privacy_policy: 'गोपनीयता नीति', terms_conditions: 'नियम और शर्तें', drug_calc: 'दवा कैलकुलेटर', bmi_calc: 'बीएमआई कैलकुलेटर', age_calc: 'आयु कैलकुलेटर', preg_calc: 'गर्भावस्था EDD', tbsa_calc: 'टीबीएसए बर्न कैलकुलेटर', mass_calc: 'यूनिट कनवर्टर', milestone_calc: 'बाल विकास मील के पत्थर', menstrual_calc: 'मासिक धर्म चक्र', calculate: 'गणना करें', reset: 'रीसेट करें', clear: 'साफ़ करें', lmp_date: 'अंतिम माहवारी का पहला दिन', edd_title: 'अनुमानित डिलीवरी की तारीख', progress_label: 'गर्भावस्था की प्रगति', current_trimester: 'वर्तमान तिमाही', conception_date: 'अनुमानित गर्भाधान तिथि', days_remaining: 'शेष दिन', end_of_first_trimester: 'पहली तिमाही का अंत', end_of_second_trimester: 'दूसरी तिमाही का अंत', weeks: 'सप्ताह', day: 'दिन', days: 'दिन', rate_us_title: 'इंस्टा नर्स को रेट करें!', rate_us_desc: 'यदि आपको यह ऐप पसंद है, तो कृपया इसे रेट करें।', rate_now: 'अभी रेट करें', privacy_title: 'गोपनीयता नीति', privacy_text: 'हम आपका कोई भी व्यक्तिगत डेटा एकत्र या संग्रहीत नहीं करते हैं। सभी गणनाएं आपके डिवाइस पर स्थानीय रूप से की जाती हैं।', terms_title: 'नियम और शर्तें', terms_text: 'यह ऐप केवल सूचनात्मक उद्देश्यों के लिए है और पेशेवर चिकित्सा सलाह का विकल्प नहीं है।', child_dob: "बच्चे की जन्म तिथि", check_milestones: 'मील के पत्थर जांचें', current_age: 'वर्तमान आयु', gross_motor: 'सकल मोटर', fine_motor: 'ठीक मोटर', social_language: 'सामाजिक और भाषा', cognitive: 'संज्ञानात्मक', consult_doctor_title: 'डॉक्टर से कब सलाह लें (रेड फ्लैग्स)', menstrual_title: 'मासिक धर्म चक्र और स्वास्थ्य ट्रैकर', last_period_label: 'आपकी अंतिम माहवारी का पहला दिन:', cycle_length_label: 'औसत चक्र लंबाई (दिनों में):', calculate_update_btn: 'गणना और अपडेट करें' },
+            'ta': { appName: 'இன்ஸ்டா நர்ஸ்', privacy_policy: 'தனியுரிமைக் கொள்கை', terms_conditions: 'விதிமுறைகள்', drug_calc: 'மருந்து கால்குலேட்டர்', bmi_calc: 'பிஎம்ஐ கால்குலேட்டர்', age_calc: 'வயது கால்குலேட்டர்', preg_calc: 'கர்ப்பம் EDD', tbsa_calc: 'TBSA பர்ன் கால்குலேட்டர்', mass_calc: 'அலகு மாற்றி', milestone_calc: 'குழந்தை வளர்ச்சி மைல்கற்கள்', menstrual_calc: 'மாதவிடாய் சுழற்சி', calculate: 'கணக்கிடு', reset: 'மீட்டமை', clear: 'அழி'},
+            'te': { appName: 'ఇన్‌స్టా నర్స్', privacy_policy: 'గోప్యతా విధానం', terms_conditions: 'నిబంధనలు', drug_calc: 'మందుల కాలిక్యులేటర్', bmi_calc: 'BMI కాలిక్యులేటర్', age_calc: 'వయస్సు కాలిక్యులేటర్', preg_calc: 'గర్భం EDD', tbsa_calc: 'TBSA బర్న్ కాలిక్యులేటర్', mass_calc: 'యూనిట్ కన్వర్టర్', milestone_calc: 'శిశు మైలురాళ్ళు', menstrual_calc: 'రుతుచక్రం', calculate: 'లెక్కించు', reset: 'రీసెట్', clear: 'క్లియర్'},
+            'kn': { appName: 'ಇನ್‌ಸ್ಟಾ ನರ್ಸ್', privacy_policy: 'ಗೌಪ್ಯತೆ ನೀತಿ', terms_conditions: 'ನಿಯಮಗಳು', drug_calc: 'ಔಷಧ ಕ್ಯಾಲ್ಕುಲೇಟರ್', bmi_calc: 'BMI ಕ್ಯಾಲ್ಕುಲೇಟರ್', age_calc: 'ವಯಸ್ಸು ಕ್ಯಾಲ್ಕುಲೇಟರ್', preg_calc: 'ಗರ್ಭಧಾರಣೆ EDD', tbsa_calc: 'TBSA ಬರ್ನ್ ಕ್ಯಾಲ್ಕುಲೇಟರ್', mass_calc: 'ಘಟಕ ಪರಿವರ್ತಕ', milestone_calc: 'ಬಾಲಕರ ಮೈಲಿಗಲ್ಲುಗಳು', menstrual_calc: 'ಮುಟ್ಟಿನ ಚಕ್ರ', calculate: 'ಲೆಕ್ಕಾಚಾರ', reset: 'ಮರುಹೊಂದಿಸಿ', clear: 'ಅಳಿಸಿ'},
+            'gu': { appName: 'ઇન્સ્ટા નર્સ', privacy_policy: 'ગોપનીયતા નીતિ', terms_conditions: 'શરતો', drug_calc: 'દવા કેલ્ક્યુલેટર', bmi_calc: 'BMI કેલ્ક્યુલેટર', age_calc: 'ઉંમર કેલ્ક્યુલેટર', preg_calc: 'ગર્ભાવસ્થા EDD', tbsa_calc: 'TBSA બર્ન કેલ્ક્યુલેટર', mass_calc: 'એકમ કન્વર્ટર', milestone_calc: 'બાળ વિકાસ માઇલસ્ટોન્સ', menstrual_calc: 'માસિક ચક્ર', calculate: 'ગણતરી', reset: 'રીસેટ', clear: 'સાફ'},
+            'pa': { appName: 'ਇੰਸਟਾ ਨਰਸ', privacy_policy: 'ਗੋਪਨੀਯਤਾ ਨੀਤੀ', terms_conditions: 'ਸ਼ਰਤਾਂ', drug_calc: 'ਦਵਾਈ ਕੈਲਕੁਲੇਟਰ', bmi_calc: 'BMI ਕੈਲਕੁਲੇਟਰ', age_calc: 'ਉਮਰ ਕੈਲਕੁਲੇਟਰ', preg_calc: 'ਗਰਭ ਅਵਸਥਾ EDD', tbsa_calc: 'TBSA ਬਰਨ ਕੈਲਕੁਲੇਟਰ', mass_calc: 'ਯੂਨਿਟ ਪਰਿਵਰਤਕ', milestone_calc: 'ਬਾਲ ਵਿਕਾਸ ਮੀਲ ਪੱਥਰ', menstrual_calc: 'ਮਾਹਵਾਰੀ ਚੱਕਰ', calculate: 'ਗਣਨਾ', reset: 'ਰੀਸੈਟ', clear: 'ਸਾਫ਼'},
+            'mr': { appName: 'इन्स्टा नर्स', privacy_policy: 'गोपनीयता धोरण', terms_conditions: 'अटी', drug_calc: 'औषध कॅल्क्युलेटर', bmi_calc: 'BMI कॅल्क्युलेटर', age_calc: 'वय कॅल्क्युलेटर', preg_calc: 'गर्भधारणा EDD', tbsa_calc: 'TBSA बर्न कॅल्क्युलेटर', mass_calc: 'युनिट कन्व्हर्टर', milestone_calc: 'बाल विकास टप्पे', menstrual_calc: 'मासिक पाळी', calculate: 'गणना', reset: 'रीसेट', clear: 'साफ'},
+            'raj': { appName: 'इंस्टा नर्स', privacy_policy: 'निजता नीति', terms_conditions: 'शर्तें', drug_calc: 'दवा कैलकुलेटर', bmi_calc: 'बीएमआई कैलकुलेटर', age_calc: 'उमर कैलकुलेटर', preg_calc: 'गर्भावस्था EDD', tbsa_calc: 'टीबीएसए बर्न कैलकुलेटर', mass_calc: 'यूनिट कनवर्टर', milestone_calc: 'बाल विकास रा मील का पत्थर', menstrual_calc: 'मासिक धर्म चक्र', calculate: 'गणना', reset: 'रीसेट', clear: 'साफ'}
+        };
+        
+        const langSelect = document.getElementById('lang-select');
+        let currentLang = 'en';
+        const setLanguage = (lang) => { if (!translations[lang]) lang = 'en'; currentLang = lang; localStorage.setItem('medinest-lang', lang); document.documentElement.lang = lang; langSelect.value = lang; document.querySelectorAll('[data-lang-key]').forEach(el => { const key = el.getAttribute('data-lang-key'); if (translations[lang]?.[key] || translations['en'][key]) { el.innerHTML = translations[lang][key] || translations['en'][key]; }}); };
+        langSelect.addEventListener('change', (e) => setLanguage(e.target.value));
+        
+        const screens = document.querySelectorAll('.calculator-view, #home-screen');
+        let currentScreenId = 'home-screen';
+        const showScreen = (screenId) => { screens.forEach(s => s.style.display = 'none'); const targetScreen = document.getElementById(screenId); if(targetScreen) { targetScreen.style.display = 'flex'; currentScreenId = screenId; window.scrollTo(0,0); }};
+        document.querySelectorAll('.calculator-card').forEach(card => card.addEventListener('click', (e) => { e.preventDefault(); showScreen(card.dataset.screen); }));
+        document.querySelectorAll('.back-button').forEach(button => button.addEventListener('click', () => showScreen('home-screen')));
+        const policyModal = document.getElementById('policy-modal');
+        const rateModal = document.getElementById('rate-us-modal');
+        const showPolicyModal = (type) => { const titleKey = type === 'privacy' ? 'privacy_title' : 'terms_title'; const textKey = type === 'privacy' ? 'privacy_text' : 'terms_text'; document.getElementById('modal-title').innerHTML = translations[currentLang][titleKey] || translations['en'][titleKey]; document.getElementById('modal-text').innerHTML = translations[currentLang][textKey] || translations['en'][textKey]; policyModal.style.display = 'flex'; };
+        const hideAllModals = () => { policyModal.style.display = 'none'; rateModal.style.display = 'none'; };
+        
+        document.getElementById('privacy-link').addEventListener('click', (e) => { e.preventDefault(); showPolicyModal('privacy'); });
+        document.getElementById('terms-link').addEventListener('click', (e) => { e.preventDefault(); showPolicyModal('terms'); });
+        document.querySelectorAll('.modal-close-btn').forEach(btn => btn.addEventListener('click', hideAllModals));
+        document.getElementById('rate-now-btn').addEventListener('click', () => { window.open('https://play.google.com/store/apps/details?id=com.your.app.id', '_blank'); hideAllModals(); });
+        
+        history.pushState(null, null, location.href);
+        window.addEventListener('popstate', function (event){ if(currentScreenId !== 'home-screen'){ showScreen('home-screen'); history.pushState(null, null, location.href); } else { rateModal.style.display = 'flex'; } });
+        
+        document.getElementById('reset-dose-btn').addEventListener('click', () => { document.getElementById('drug-d').value = ''; document.getElementById('drug-h').value = ''; document.getElementById('drug-v').value = ''; document.getElementById('dose-result').style.display = 'none'; });
+        document.getElementById('reset-mlhr-btn').addEventListener('click', () => { document.getElementById('fluid-volume-mlhr').value = ''; document.getElementById('fluid-time-hr').value = ''; document.getElementById('fluid-result').style.display = 'none'; });
+        document.getElementById('reset-dropmin-btn').addEventListener('click', () => { document.getElementById('fluid-volume-drop').value = ''; document.getElementById('fluid-time-min').value = ''; document.getElementById('drop-factor').value = ''; document.getElementById('fluid-result').style.display = 'none'; });
+        document.getElementById('reset-age-btn').addEventListener('click', () => { document.getElementById('dob').value = ''; document.getElementById('age-result').style.display = 'none'; });
+        document.getElementById('reset-edd-btn').addEventListener('click', () => { document.getElementById('lmp').value = ''; document.getElementById('edd-result-container').style.display = 'none'; });
+        document.getElementById('reset-bmi-btn').addEventListener('click', () => {document.getElementById('bmi-height').value = ''; document.getElementById('bmi-weight').value = ''; document.getElementById('bmi-age').value = ''; document.getElementById('bmi-result').style.display = 'none';});
+        document.getElementById('clear-tbsa-btn').addEventListener('click', () => {document.getElementById('tbsa-adult-svg').querySelectorAll('path.selected').forEach(part => part.classList.remove('selected')); document.getElementById('tbsa-total').textContent = '0.0';});
+        document.getElementById('reset-milestone-btn').addEventListener('click', () => { document.getElementById('milestone-dob').value = ''; document.getElementById('milestone-result-container').style.display = 'none'; });
+        document.getElementById('reset-menstrual-btn').addEventListener('click', () => { 
+            const menstrualScreen = document.getElementById('menstrual-calc-screen');
+            menstrualScreen.querySelector('#last-period-date').value = '';
+            menstrualScreen.querySelector('#cycle-length').value = '28';
+            menstrualScreen.querySelectorAll('.results-section').forEach(el => el.classList.add('hidden'));
+        });
+
+        function setupTabs(containerId) {const container = document.getElementById(containerId); if(!container) return; const tabButtons = container.querySelectorAll(':scope > .tab-btn'); const tabContents = container.parentElement.querySelectorAll(':scope > .tab-content'); tabButtons.forEach(button => {button.addEventListener('click', () => {tabButtons.forEach(btn => btn.classList.remove('active')); button.classList.add('active'); tabContents.forEach(content => content.classList.remove('active')); const activeContentId = button.dataset.tab; const activeContent = document.getElementById(activeContentId); if(activeContent) activeContent.classList.add('active');});});}
+        setupTabs('drug-calc-tabs'); setupTabs('fluid-calc-tabs');
+        document.getElementById('calc-dose-btn').addEventListener('click', () => {const d = parseFloat(document.getElementById('drug-d').value); const h = parseFloat(document.getElementById('drug-h').value); const v = parseFloat(document.getElementById('drug-v').value); const resultBox = document.getElementById('dose-result'); if (isNaN(d) || isNaN(h) || isNaN(v) || h === 0) {resultBox.innerHTML = 'Please enter valid numbers.'; resultBox.style.display = 'block'; return;} const dose = (d / h) * v; resultBox.innerHTML = `Administer: <strong>${dose.toFixed(2)} mL</strong>`; resultBox.style.display = 'block';});
+        document.getElementById('calc-mlhr-btn').addEventListener('click', () => {const vol = parseFloat(document.getElementById('fluid-volume-mlhr').value); const time = parseFloat(document.getElementById('fluid-time-hr').value); const resultBox = document.getElementById('fluid-result'); if (isNaN(vol) || isNaN(time) || time === 0) {resultBox.innerHTML = 'Please enter valid numbers.'; resultBox.style.display = 'block'; return;} const rate = vol / time; resultBox.innerHTML = `Flow Rate: <strong>${rate.toFixed(2)} mL/hr</strong>`; resultBox.style.display = 'block';});
+        document.getElementById('calc-dropmin-btn').addEventListener('click', () => {const vol = parseFloat(document.getElementById('fluid-volume-drop').value); const time = parseFloat(document.getElementById('fluid-time-min').value); const factor = parseFloat(document.getElementById('drop-factor').value); const resultBox = document.getElementById('fluid-result'); if (isNaN(vol) || isNaN(time) || isNaN(factor) || time === 0) {resultBox.innerHTML = 'Please enter valid numbers.'; resultBox.style.display = 'block'; return;} const rate = (vol / time) * factor; resultBox.innerHTML = `Flow Rate: <strong>${rate.toFixed(2)} gtt/min</strong>`; resultBox.style.display = 'block';});
+        document.getElementById('calc-bmi-btn').addEventListener('click', () => {const height = parseFloat(document.getElementById('bmi-height').value); const weight = parseFloat(document.getElementById('bmi-weight').value); const resultBox = document.getElementById('bmi-result'); if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) { document.getElementById('bmi-category').textContent = 'Invalid input'; resultBox.style.display = 'block'; return;} const heightInMeters = height / 100; const bmi = weight / (heightInMeters * heightInMeters); document.getElementById('bmi-value').textContent = bmi.toFixed(2); let category = '', color = '', progress = 0; if (bmi < 18.5) {category = translations[currentLang].underweight; color = 'var(--warning-color)'; progress = (bmi / 18.5) * 25;} else if (bmi < 25) {category = translations[currentLang].normal_weight; color = 'var(--success-color)'; progress = 25 + ((bmi - 18.5) / 6.5) * 25;} else if (bmi < 30) {category = translations[currentLang].overweight; color = 'var(--warning-color)'; progress = 50 + ((bmi - 25) / 5) * 25;} else {category = translations[currentLang].obesity; color = 'var(--danger-color)'; progress = 75 + Math.min(((bmi - 30) / 10) * 25, 25);} document.getElementById('bmi-category').textContent = category; const progressBar = document.getElementById('bmi-progress-bar'); progressBar.style.width = `${Math.max(5, progress)}%`; progressBar.style.backgroundColor = color; resultBox.style.display = 'block';});
+        document.getElementById('calc-age-btn').addEventListener('click', () => {const dobString = document.getElementById('dob').value; if (!dobString) return; const dob = new Date(dobString); const today = new Date(); let years = today.getFullYear() - dob.getFullYear(); let months = today.getMonth() - dob.getMonth(); let days = today.getDate() - dob.getDate(); if (days < 0) { months--; days += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); } if (months < 0) { years--; months += 12; } document.getElementById('age-output').innerHTML = `<strong>${years}</strong> ${translations[currentLang].years}, <strong>${months}</strong> ${translations[currentLang].months}, <strong>${days}</strong> ${translations[currentLang].days}`; let nextBirthday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate()); if (today > nextBirthday) nextBirthday.setFullYear(today.getFullYear() + 1); let timeDiff = nextBirthday.getTime() - today.getTime(); let totalDaysLeft = Math.ceil(timeDiff / (1000 * 3600 * 24)); let monthsLeft = Math.floor(totalDaysLeft / 30.44); let daysLeft = Math.floor(totalDaysLeft % 30.44); document.getElementById('next-birthday-output').innerHTML = `${translations[currentLang].next_birthday_in} <strong>${monthsLeft}</strong> ${translations[currentLang].months}, <strong>${daysLeft}</strong> ${translations[currentLang].days}`; document.getElementById('age-result').style.display = 'block';});
+        document.getElementById('calc-edd-btn').addEventListener('click', () => {const lmpString = document.getElementById('lmp').value; if (!lmpString) return; const lmp = new Date(lmpString); const today = new Date(); today.setHours(0, 0, 0, 0); const edd = new Date(lmp); edd.setDate(edd.getDate() + 280); const daysSinceLmp = Math.floor((today - lmp) / (1000 * 60 * 60 * 24)); if (daysSinceLmp < 0) { document.getElementById('edd-result-container').style.display = 'none'; alert("Please select a past date for the Last Menstrual Period."); return; } const gestationalWeeks = Math.floor(daysSinceLmp / 7); const gestationalDays = daysSinceLmp % 7; let trimester = 1; if (gestationalWeeks >= 28) trimester = 3; else if (gestationalWeeks >= 14) trimester = 2; const conceptionDate = new Date(lmp); conceptionDate.setDate(conceptionDate.getDate() + 14); const daysRemaining = Math.ceil((edd - today) / (1000 * 60 * 60 * 24)); const progressPercentage = Math.min((daysSinceLmp / 280) * 100, 100); const firstTrimesterEnd = new Date(lmp); firstTrimesterEnd.setDate(firstTrimesterEnd.getDate() + (13 * 7) + 6); const secondTrimesterEnd = new Date(lmp); secondTrimesterEnd.setDate(secondTrimesterEnd.getDate() + (27 * 7) + 6); const options = { year: 'numeric', month: 'long', day: 'numeric' }; const locale = currentLang.replace(/_/, '-') || 'en-US'; document.getElementById('edd-value').textContent = edd.toLocaleDateString(locale, options); document.getElementById('gestational-age-value').innerHTML = `<strong>${gestationalWeeks}</strong> ${translations[currentLang].weeks}, <strong>${gestationalDays}</strong> ${gestationalDays === 1 ? translations[currentLang].day : translations[currentLang].days}`; document.getElementById('pregnancy-progress-bar').style.width = `${progressPercentage}%`; document.getElementById('trimester-value').textContent = trimester; document.getElementById('conception-date-value').textContent = conceptionDate.toLocaleDateString(locale, { month: 'short', day: 'numeric' }); document.getElementById('days-remaining-value').textContent = `${daysRemaining} ${translations[currentLang].days}`; document.getElementById('first-trimester-end-date').textContent = firstTrimesterEnd.toLocaleDateString(locale, options); document.getElementById('second-trimester-end-date').textContent = secondTrimesterEnd.toLocaleDateString(locale, options); document.getElementById('edd-result-container').style.display = 'flex';});
+        const tbsaSvg = document.getElementById('tbsa-adult-svg'); const tbsaTotalEl = document.getElementById('tbsa-total'); tbsaSvg.addEventListener('click', (e) => {const part = e.target.closest('path'); if (part && part.dataset.percent) {part.classList.toggle('selected'); updateTbsaTotal();}}); function updateTbsaTotal() {let total = 0; tbsaSvg.querySelectorAll('path.selected').forEach(part => {total += parseFloat(part.dataset.percent);}); tbsaTotalEl.textContent = total.toFixed(1);}
+        
+        // --- PEDIATRIC MILESTONE LOGIC ---
+        const pediatricMilestones = [
+            { maxAge: 2, title: "0-2 Months", gross: ["Lifts head briefly when on stomach", "Moves head from side to side", "Makes jerky, quivering arm movements"], fine: ["Keeps hands in tight fists", "Brings hands to face", "Strong grasp reflex"], social: ["Stares at faces", "Follows objects with eyes", "Responds to parent's voice"], cognitive: ["Startles at loud noises", "Briefly looks at objects"], red_flags: ["Doesn't respond to loud sounds", "Doesn't watch things as they move", "Is very floppy or stiff"] },
+            { maxAge: 4, title: "2-4 Months", gross: ["Pushes up to elbows on tummy", "Holds head steady, unsupported", "May roll over from tummy to back"], fine: ["Opens and shuts hands", "Brings hands to mouth", "Swats at dangling objects"], social: ["Begins to smile socially", "Coos and makes gurgling sounds", "Copies some facial expressions"], cognitive: ["Recognizes familiar people and things at a distance", "Tracks moving objects with eyes"], red_flags: ["Doesn't follow moving things with eyes", "Doesn't smile at people", "Can't hold head steady"] },
+            { maxAge: 6, title: "4-6 Months", gross: ["Rolls over in both directions (front to back, back to front)", "Begins to sit without support", "Supports weight on legs when standing"], fine: ["Reaches for toy with one hand", "Transfers objects from hand to hand", "Uses raking grasp"], social: ["Responds to own name", "Laughs and squeals", "Likes to play with others, especially parents"], cognitive: ["Finds partially hidden object", "Explores things with hands and mouth"], red_flags: ["Shows no affection for caregivers", "Doesn't try to get things that are in reach", "Seems very stiff, with tight muscles"] },
+            { maxAge: 9, title: "6-9 Months", gross: ["Sits without support", "Crawls", "Pulls to stand"], fine: ["Developing pincer grasp (thumb and index finger)", "Picks up things like cereal o's", "Bangs two objects together"], social: ["May be afraid of strangers (stranger anxiety)", "Has favorite toys", "Understands 'no'"], cognitive: ["Plays peek-a-boo", "Looks for things he sees you hide", "Babbles 'mama' and 'dada' (non-specific)"], red_flags: ["Doesn't bear weight on legs with support", "Doesn't babble", "Doesn't look where you point"] },
+            { maxAge: 12, title: "9-12 Months", gross: ["Cruises (walks holding on to furniture)", "May stand alone", "May take a few steps without support"], fine: ["Puts things in a container, takes things out", "Lets go of objects voluntarily", "Pokes with index finger"], social: ["Is shy or nervous with strangers", "Cries when mom or dad leaves (separation anxiety)", "Waves 'bye-bye'"], cognitive: ["Says 'dada' and 'mama' (specific)", "Copies gestures", "Follows simple directions"], red_flags: ["Doesn't crawl", "Can't stand when supported", "Loses skills he once had"] },
+            { maxAge: 18, title: "12-18 Months", gross: ["Walks alone", "May walk up steps and run", "Pulls toys while walking"], fine: ["Scribbles on his own", "Can drink from a cup", "Can use a spoon"], social: ["May have temper tantrums", "Points to show others something interesting", "Plays simple pretend, such as feeding a doll"], cognitive: ["Says several single words", "Points to one body part", "Understands simple commands"], red_flags: ["Can't walk", "Doesn't know what familiar things are for", "Doesn't copy others"] },
+            { maxAge: 24, title: "18-24 Months (2 Years)", gross: ["Kicks a ball", "Stands on tiptoe", "Runs"], fine: ["Builds tower of 4 or more blocks", "Makes or copies straight lines and circles", "Can undress self"], social: ["Shows more and more independence", "Gets excited when with other children", "Plays mainly beside other children, but is beginning to include them"], cognitive: ["Follows two-step instructions", "Says sentences with 2 to 4 words", "Sorts shapes and colors"], red_flags: ["Doesn't use 2-word phrases", "Doesn't follow simple instructions", "Walks unsteadily"] }
+        ];
+
+        document.getElementById('calc-milestone-btn').addEventListener('click', () => {
+            const dobString = document.getElementById('milestone-dob').value;
+            const resultContainer = document.getElementById('milestone-result-container');
+            if (!dobString) return;
+
+            const dob = new Date(dobString);
+            const today = new Date();
+            
+            if (dob > today) {
+                alert("Date of birth cannot be in the future.");
+                return;
+            }
+
+            let years = today.getFullYear() - dob.getFullYear();
+            let months = today.getMonth() - dob.getMonth();
+            let days = today.getDate() - dob.getDate();
+            if (days < 0) { months--; days += new Date(today.getFullYear(), today.getMonth(), 0).getDate(); }
+            if (months < 0) { years--; months += 12; }
+            const totalMonths = (years * 12) + months;
+            
+            const ageString = `<strong>${totalMonths}</strong> ${translations[currentLang][totalMonths === 1 ? 'month' : 'months']}, <strong>${days}</strong> ${translations[currentLang].days}`;
+            
+            let resultHTML = `<div class="age-display-card">
+                                <div class="label" data-lang-key="current_age">${translations[currentLang].current_age || 'Current Age'}</div>
+                                <div class="value">${ageString}</div>
+                              </div>`;
+
+            if (totalMonths > 24) {
+                 resultHTML += `<div class="milestone-card"><p>${translations[currentLang].over_age_limit || 'This calculator is for children up to 24 months old.'}</p></div>`;
+            } else {
+                const milestoneGroup = pediatricMilestones.find(m => totalMonths < m.maxAge);
+                if (milestoneGroup) {
+                    const { title, gross, fine, social, cognitive, red_flags } = milestoneGroup;
+                    
+                    const createList = (items) => items.map(item => `<li>${item}</li>`).join('');
+
+                    resultHTML += `<div class="milestone-card">
+                        <h2 class="milestone-title">${translations[currentLang].milestone_group_title.replace('{age_range}', title)}</h2>
+                        
+                        <h3 class="milestone-category">${translations[currentLang].gross_motor}</h3>
+                        <ul class="milestone-list">${createList(gross)}</ul>
+                        
+                        <h3 class="milestone-category">${translations[currentLang].fine_motor}</h3>
+                        <ul class="milestone-list">${createList(fine)}</ul>
+
+                        <h3 class="milestone-category">${translations[currentLang].social_language}</h3>
+                        <ul class="milestone-list">${createList(social)}</ul>
+
+                        <h3 class="milestone-category">${translations[currentLang].cognitive}</h3>
+                        <ul class="milestone-list">${createList(cognitive)}</ul>
+                    </div>`;
+
+                     resultHTML += `<div class="red-flags-card">
+                        <h2 class="milestone-title">${translations[currentLang].consult_doctor_title}</h2>
+                        <ul class="milestone-list">${createList(red_flags)}</ul>
+                    </div>`;
+                }
+            }
+
+            resultContainer.innerHTML = resultHTML;
+            resultContainer.style.display = 'flex';
+        });
+
+        // --- MENSTRUAL CYCLE CALCULATOR LOGIC ---
+        const menstrualScreen = document.getElementById('menstrual-calc-screen');
+        if (menstrualScreen) {
+            const calculateBtn = menstrualScreen.querySelector('#calculate-btn');
+            const resultsContainer = menstrualScreen.querySelector('#results');
+            const doctorInfoContainer = menstrualScreen.querySelector('#doctor-info');
+            const symptomTrackerContainer = menstrualScreen.querySelector('#symptom-tracker');
+            const cycleHistoryContainer = menstrualScreen.querySelector('#cycle-history');
+            const educationalTipsContainer = menstrualScreen.querySelector('#educational-tips');
+            const conceptionTipsContainer = menstrualScreen.querySelector('#conception-tips');
+            const tipContentEl = menstrualScreen.querySelector('#tip-content');
+            const historyListEl = menstrualScreen.querySelector('#history-list');
+            const peakFertilityEl = menstrualScreen.querySelector('#peak-fertility-dates');
+
+            const symptoms = [
+                { id: 'cramps', label: 'Cramps' }, { id: 'bloating', label: 'Bloating' },
+                { id: 'headache', label: 'Headache' }, { id: 'acne', label: 'Acne' },
+                { id: 'tender_breasts', label: 'Tender Breasts' }, { id: 'fatigue', label: 'Fatigue' },
+                { id: 'happy', label: 'Happy' }, { id: 'sad', label: 'Sad' },
+                { id: 'anxious', label: 'Anxious' }, { id: 'irritable', label: 'Irritable' },
+                { id: 'energetic', label: 'Energetic' }, { id: 'craving', label: 'Cravings' }
+            ];
+
+            function initializeSymptomTracker() {
+                const symptomGrid = symptomTrackerContainer.querySelector('.symptom-grid');
+                symptomGrid.innerHTML = '';
+                symptoms.forEach(symptom => {
+                    const item = document.createElement('div');
+                    item.className = 'symptom-item';
+                    item.innerHTML = `
+                        <input type="checkbox" id="${symptom.id}" name="symptom" value="${symptom.label}">
+                        <label for="${symptom.id}">${symptom.label}</label>
+                    `;
+                    symptomGrid.appendChild(item);
+                });
+            }
+
+            function getCycleHistory() {
+                return JSON.parse(localStorage.getItem('cycleHistory')) || [];
+            }
+
+            function saveCycleHistory(entry) {
+                let history = getCycleHistory();
+                if (!history.some(h => h.startDate === entry.startDate)) {
+                    history.unshift(entry);
+                    if (history.length > 3) history.pop();
+                    localStorage.setItem('cycleHistory', JSON.stringify(history));
+                }
+            }
+
+            function displayCycleHistory() {
+                const history = getCycleHistory();
+                historyListEl.innerHTML = '';
+                if (history.length === 0) {
+                    historyListEl.innerHTML = '<li>No history yet. Your first calculation will be saved.</li>';
+                } else {
+                    history.forEach(entry => {
+                        const li = document.createElement('li');
+                        li.textContent = `Started: ${new Date(entry.startDate).toLocaleDateString()} - Length: ${entry.length} days`;
+                        historyListEl.appendChild(li);
+                    });
+                }
+            }
+
+            const tips = {
+                menstrual: "Your body is shedding its uterine lining. It's a good time for rest and gentle activities like walking or yoga. Iron-rich foods like spinach and lentils can be beneficial.",
+                follicular: "Your energy levels may start to rise as estrogen increases. This can be a great time for more intense workouts and creative projects.",
+                ovulation: "This is your most fertile time. You might feel a peak in energy and libido. Pay close attention to your body's signals if you are trying to conceive.",
+                luteal: "Progesterone is rising, which can sometimes lead to PMS symptoms like bloating or moodiness. Focus on nutrient-dense foods and calming activities to manage symptoms.",
+                unknown: "Please enter your last period date to get personalized tips for your current cycle phase."
+            };
+
+            calculateBtn.addEventListener('click', () => {
+                const lastPeriodDateInput = menstrualScreen.querySelector('#last-period-date').value;
+                const cycleLength = parseInt(menstrualScreen.querySelector('#cycle-length').value, 10);
+
+                if (!lastPeriodDateInput || isNaN(cycleLength) || cycleLength < 20 || cycleLength > 45) {
+                    alert("Please fill in both fields. Cycle length must be between 20 and 45 days.");
+                    return;
+                }
+
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+
+                const lutealPhaseLength = 14;
+                const lastPeriodDate = new Date(lastPeriodDateInput);
+                lastPeriodDate.setMinutes(lastPeriodDate.getMinutes() + lastPeriodDate.getTimezoneOffset());
+                lastPeriodDate.setHours(0, 0, 0, 0);
+
+                const ovulationDate = new Date(lastPeriodDate);
+                ovulationDate.setDate(lastPeriodDate.getDate() + (cycleLength - lutealPhaseLength));
+
+                const nextPeriodDate = new Date(lastPeriodDate);
+                nextPeriodDate.setDate(lastPeriodDate.getDate() + cycleLength);
+
+                const fertileWindowStart = new Date(ovulationDate);
+                fertileWindowStart.setDate(ovulationDate.getDate() - 5);
+                
+                const peakFertilityStart = new Date(ovulationDate);
+                peakFertilityStart.setDate(ovulationDate.getDate() - 2);
+
+                let currentPhaseKey = 'unknown';
+                const menstrualPhaseEnd = new Date(lastPeriodDate);
+                menstrualPhaseEnd.setDate(lastPeriodDate.getDate() + 4);
+
+                if (today >= lastPeriodDate && today <= menstrualPhaseEnd) currentPhaseKey = "menstrual";
+                else if (today > menstrualPhaseEnd && today < ovulationDate) currentPhaseKey = "follicular";
+                else if (today.getTime() === ovulationDate.getTime()) currentPhaseKey = "ovulation";
+                else if (today > ovulationDate && today < nextPeriodDate) currentPhaseKey = "luteal";
+
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                const locale = currentLang.replace(/_/, '-') || 'en-US';
+                const nextPeriodStr = nextPeriodDate.toLocaleDateString(locale, options);
+                const ovulationStr = ovulationDate.toLocaleDateString(locale, options);
+                const fertileWindowStr = `${fertileWindowStart.toLocaleDateString(locale, options)} - ${ovulationDate.toLocaleDateString(locale, options)}`;
+                const peakFertilityStr = `${peakFertilityStart.toLocaleDateString(locale, options)} - ${ovulationDate.toLocaleDateString(locale, options)}`;
+
+                resultsContainer.innerHTML = `
+                    <div class="result-item">
+                        <strong>Current Phase (Today)</strong>
+                        <span class="highlight-current">${tips[currentPhaseKey] ? currentPhaseKey.charAt(0).toUpperCase() + currentPhaseKey.slice(1) + ' Phase' : 'Update date'}</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Estimated Next Period</strong>
+                        <span>${nextPeriodStr}</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Approximate Fertile Window</strong>
+                        <span class="highlight-fertile">${fertileWindowStr}</span>
+                    </div>
+                    <div class="result-item">
+                        <strong>Estimated Ovulation Day</strong>
+                        <span class="highlight-ovulation">${ovulationStr}</span>
+                    </div>
+                `;
+                
+                peakFertilityEl.textContent = peakFertilityStr;
+                tipContentEl.textContent = tips[currentPhaseKey];
+
+                saveCycleHistory({ startDate: lastPeriodDate.toISOString().split('T')[0], length: cycleLength });
+                displayCycleHistory();
+
+                [resultsContainer, doctorInfoContainer, symptomTrackerContainer, cycleHistoryContainer, educationalTipsContainer, conceptionTipsContainer].forEach(el => {
+                    el.classList.remove('hidden');
+                });
+            });
+
+            initializeSymptomTracker();
+            displayCycleHistory();
+            if (getCycleHistory().length > 0) {
+                cycleHistoryContainer.classList.remove('hidden');
+            }
+        }
+
+
+        const dateTimeElement = document.getElementById('live-datetime');
+        function updateLiveDateTime() { const now = new Date(); const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' }; const locale = currentLang.replace(/_/, '-') || 'en-US'; dateTimeElement.textContent = now.toLocaleString(locale, options); }
+        setInterval(updateLiveDateTime, 1000);
+        
+        function loadAds() {
+            const adKey = '1e7e84fedd27c00dba60e5ac89fc55ac';
+            const adUrl = `//www.highperformanceformat.com/${adKey}/invoke.js`;
+            document.querySelectorAll('.ad-bar').forEach(adBar => {
+                adBar.innerHTML = '';
+                const script1 = document.createElement('script');
+                script1.type = 'text/javascript';
+                script1.innerHTML = `atOptions = {'key' : '${adKey}','format' : 'iframe','height' : 50,'width' : 320,'params' : {}};`;
+                const script2 = document.createElement('script');
+                script2.type = 'text/javascript';
+                script2.src = adUrl;
+                adBar.appendChild(script1);
+                adBar.appendChild(script2);
+            });
+        }
+        
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js', { scope: '/' })
+                    .then(registration => { console.log('ServiceWorker registration successful:', registration); })
+                    .catch(error => { console.log('ServiceWorker registration failed:', error); });
+            });
+        }
+
+        setLanguage(localStorage.getItem('medinest-lang') || 'en');
+        showScreen('home-screen');
+        loadAds();
+
+        // --- Unit Converter JavaScript ---
+        const massCalcScreen = document.getElementById('mass-calc-screen');
+        const inputValue = massCalcScreen.querySelector('#inputValue');
+        const fromUnit = massCalcScreen.querySelector('#fromUnit');
+        const toUnit = massCalcScreen.querySelector('#toUnit');
+        const convertButton = massCalcScreen.querySelector('#convertButton');
+        const clearButton = massCalcScreen.querySelector('#clearButton');
+        const copyButton = massCalcScreen.querySelector('#copyButton');
+        const resultDisplay = massCalcScreen.querySelector('#resultDisplay');
+        const resultUnitSpan = massCalcScreen.querySelector('#resultUnit');
+        const messageBox = massCalcScreen.querySelector('#messageBox');
+        const conversionFactors = { 'mcg': 0.001, 'mg': 1, 'gm': 1000 };
+        function showMessage(message, type) { messageBox.textContent = message; messageBox.classList.remove('hidden', 'bg-red-800', 'bg-green-800', 'bg-blue-800'); if (type === 'error') { messageBox.classList.add('bg-red-800'); } else if (type === 'success') { messageBox.classList.add('bg-green-800'); } else { messageBox.classList.add('bg-blue-800'); } messageBox.classList.remove('hidden'); }
+        function hideMessageBox() { if (!messageBox.classList.contains('hidden')) { messageBox.classList.add('hidden'); messageBox.textContent = ''; } }
+        function convertUnits() { hideMessageBox(); const value = parseFloat(inputValue.value); const from = fromUnit.value; const to = toUnit.value; const resultValueElement = resultDisplay.firstChild; resultValueElement.parentElement.classList.remove('animate-result'); void resultValueElement.parentElement.offsetWidth; if (isNaN(value) || value < 0) { resultValueElement.textContent = 'Invalid'; resultUnitSpan.textContent = 'Input'; showMessage('Please enter a valid positive number.', 'error'); return; } if (from === to) { resultValueElement.textContent = value; resultUnitSpan.textContent = from; showMessage('Units are the same. No conversion needed.', 'info'); resultValueElement.parentElement.classList.add('animate-result'); return; } try { const valueInMg = value * conversionFactors[from]; const convertedValue = valueInMg / conversionFactors[to]; const formattedResult = parseFloat(convertedValue.toPrecision(10)); resultValueElement.textContent = formattedResult + " "; resultUnitSpan.textContent = to; resultValueElement.parentElement.classList.add('animate-result'); } catch (error) { console.error("Conversion error:", error); resultValueElement.textContent = 'Error'; resultUnitSpan.textContent = ''; showMessage('An error occurred during conversion. Please try again.', 'error'); } }
+        function clearInputsAndResult() { inputValue.value = ''; resultDisplay.firstChild.textContent = '0 '; resultUnitSpan.textContent = toUnit.value; hideMessageBox(); resultDisplay.classList.remove('animate-result'); }
+        function copyResultToClipboard() { const textToCopy = resultDisplay.firstChild.textContent.trim(); if (isNaN(parseFloat(textToCopy))) { showMessage('Nothing to copy.', 'error'); return; } try { navigator.clipboard.writeText(textToCopy).then(() => { showMessage('Result copied to clipboard!', 'success'); }, () => { throw new Error("Clipboard write failed"); }); } catch (err) { try { const tempInput = document.createElement('textarea'); tempInput.value = textToCopy; document.body.appendChild(tempInput); tempInput.select(); document.execCommand('copy'); document.body.removeChild(tempInput); showMessage('Result copied to clipboard!', 'success'); } catch (fallbackErr) { console.error('Failed to copy text: ', fallbackErr); showMessage('Failed to copy result. Please copy manually.', 'error'); } } }
+        if(convertButton) convertButton.addEventListener('click', convertUnits);
+        if(clearButton) clearButton.addEventListener('click', clearInputsAndResult);
+        if(copyButton) copyButton.addEventListener('click', copyResultToClipboard);
+        if(inputValue) inputValue.addEventListener('input', convertUnits);
+        if(fromUnit) fromUnit.addEventListener('change', convertUnits);
+        if(toUnit) toUnit.addEventListener('change', () => { if(inputValue.value) { convertUnits(); } else { resultUnitSpan.textContent = toUnit.value; } });
+    });
+    </script>
+</body>
+</html>
