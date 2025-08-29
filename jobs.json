@@ -113,7 +113,7 @@
         "salary": "AED 4,500 – 6,000",
         "notes": "This job is available in Abu dhabu. Those who are interested and eligible can apply directly by clicking Apply Now.if you are shortlisted call back you.",
         "applyUrl": "https://burjeel.com/careers/",
-        "datePosted": new Date().toISOString(), // Posted now for "New" badge demo
+        "datePosted": "2025-08-29T12:00:00Z",
         "logoText": "KG"
       },
       {
