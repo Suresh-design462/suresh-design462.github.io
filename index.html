@@ -3532,266 +3532,30 @@ if (isAcidosis) {
         })();
 // --- Job Portal Initialization ---
         const APP_DOWNLOAD_LINK = "https://yourapp.download.link";
+let jobs = []; // Start with an empty array
 
+    // Function to fetch job data from your jobs.json file
+    async function loadJobs() {
+      try {
+        // IMPORTANT: Replace the URL with the actual URL of your jobs.json file on GitHub
+        const response = await fetch('https://github.com/Suresh-design462/suresh-design462.github.io/blob/main/jobs.json'); 
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const jobData = await response.json();
+        jobs = jobData; // Update the global jobs array with live data
+      } catch (error) {
+        console.error("Could not load job data:", error);
+        // Optional: You can keep the old hardcoded jobs here as a fallback
+        // jobs = [ { facilityName: "Fallback Job...", ... } ]; 
+      } finally {
+        render(); // Render the jobs after fetching (or failing)
+      }
+        }
     const locations = {
       UAE: ["Abu Dhabi", "Dubai", "Sharjah", "Ajman", "Umm Al Quwain", "Ras Al Khaimah", "Fujairah"],
       India: ["Jaipur, Rajasthan", "Udaipur, Rajasthan", "Jodhpur, Rajasthan", "Ajmer, Rajasthan", "New Delhi", "Gurugram", "Noida, Uttar Pradesh", "Ahmedabad, Gujarat",  "Gandhinagar, Gujarat", "Pune, Maharashtra", "Ranchi", "Surat, Gujarat"]
     };
-
-    let jobs = [
-      {
-        facilityName: "Shalby limited | Hospitals",
-        address: "Central, India",
-        position: "Staff Nurse",
-        department: "Nursing",
-        education: "Registered Nurse (RN) license, Bachelor’s degree in nursing (BSN) preferred",
-        experience: "1-7 years",
-        salary: "Salary Not Disclosed",
-        notes: "ACLS, BLS, Emergency medication and interpretation, Patient assessment and triage, Intubation, Ventilator management, Emergency Nursing",
-        applyUrl: "https://shalbycareers.peoplestrong.com/job/detail/SHA4509",
-        datePosted: "2025-08-29T11:10:00Z",
-        logoText: "AH"
-      },
-      {
-        facilityName: "Emirates Hospitals Group",
-        address: "Shining Towers Mubarak Bin Mohammed Street، Khalidiyah - Khalidiyah St - Abu Dhabi",
-        position: "Nursing Staff",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2-5 years",
-        salary: "Salary Not Disclosed",
-        notes: "If you are interested in joining our team, please send your CV to recruitment@emirateshospital.ae",
-        applyUrl: "https://emirateshospitals.ae/careers/",
-        datePosted: "2025-08-29T09:30:00Z",
-        logoText: "EH"
-      },
-      {
-        facilityName: "NMC Speciality Hospital",
-        address: "Area - Zayed The First St - near Sama Tower - Al Danah - Zone 1 - Abu Dhabi",
-        position: "Registered Nurse",
-        department: "Outpatient Clinic",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Manage their own professional re-licensure.Hold a valid American Heart Association Basic Life Support Provider card.Be willing to work across departments when necessary.Be able to communicate clearly and effectively in English (spoken and written)",
-        applyUrl: "https://eiby.fa.em2.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs/preview/6827/?lastSelectedFacet=CATEGORIES&selectedCategoriesFacet=300001951570313",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "NMC"
-      },
-      {
-        facilityName: "SEHA - Corniche Hospital",
-        address: "Al Zahiyah - E12 - Abu Dhabi",
-        position: "Practical Nurse - STMC",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Provides age appropriate patient care according to the Nursing Scope of Practice as defined by the regulatory body.",
-        applyUrl: "https://fa-eutv-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs/preview/1378",
-        datePosted: "2025-08-29T09:30:00Z",
-        logoText: "SEHA"
-      },
-      {
-        facilityName: "LLH Hospital",
-        address: "Muroor Road Zone 1E3-02 - Abu Dhabi",
-        position: "Senior Nurse ICU",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Mandatory Skills equivelent your degree, Intubation, ICU Specific Medical Equipment Management",
-        applyUrl: "https://llhhospital.com/careers/",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "LLH"
-      },
-      {
-        facilityName: "Medeor 24×7 Hospital",
-        address: "Al Falah St - Al Danah - Zone 1 - Abu Dhabi",
-        position: "Registered Nurse",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Mandatory Skills Mechanical Ventilation and Respiratory Care, Intubation, ICU Specific Medical Equipment Management",
-        applyUrl: "https://medeor.ae/careers/",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "MH"
-      },
-      {
-        facilityName: "Ahalia Hospital",
-        address: "opp Liwa Center - Hamdan Bin Mohammed St - Abu Dhabi",
-        position: "Registered Nurse",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "For Job vacancies kindly contact our HR department or send your updated resume to the following email address: hrdahalia@ahaliagroup.com",
-        applyUrl: "https://ahaliagroup.com/ahh/career/",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "AH"
-      },
-{
-        facilityName: "Manipals Hospitals",
-        address: "Mysuru, India",
-        position: "Nurse - Emergency-AER",
-        department: "Emergency-AER",
-        education: "Registered Nurse (RN) license, Bachelor’s degree in nursing (BSN) preferred",
-        experience: "1-5 years",
-        salary: "Salary Not Disclosed",
-        notes: "ACLS, BLS, Emergency medication and interpretation, Patient assessment and triage, Intubation, Ventilator management, Emergency Nursing",
-        applyUrl: "https://careers.manipalhospitals.com/manipalhospitals/jobview/nurse-mysuru-2024101406331589?id=548370",
-        datePosted: "2025-08-29T11:10:00Z",
-        logoText: "AH"
-      },
-      {
-        facilityName: "Burjeel Hospital",
-        address: "Al Najdah Street - Abu Dhabi, UAE",
-        position: "Registered Nurse",
-        department: "Pediatrics",
-        education: "BSN, PALS",
-        experience: "2+ years",
-        salary: "AED 4,500 – 6,000",
-        notes: "This job is available in Abu dhabu. Those who are interested and eligible can apply directly by clicking Apply Now.if you are shortlisted call back you.",
-        applyUrl: "https://burjeel.com/careers/",
-        datePosted: new Date().toISOString(), // Posted now for "New" badge demo
-        logoText: "KG"
-      },
-      {
-        facilityName: "Medanta Noida",
-        address: "Medanta- The Medicity, CH Baktawar Singh Rd, Medicity, Islampur Colony, Sector 38, Gurugram, Haryana 122001, India",
-        position: "Clinical Instructor",
-        department: "Nursing",
-        education: "Bsc Nursing / Msc Nursing / Post Basic Nursing",
-        experience: "1-7+ years",
-        salary: "₹ 30,000 - 45,000",
-        notes: "To provide high-quality clinical education and training to nursing and allied health staff, ensuring the delivery of safe, evidence-based patient care.",
-        applyUrl: "https://www.medanta.org/jobs/clinical-instructor/form",
-        datePosted: "2025-08-27T10:00:00Z",
-        logoText: "MH"
-      },
-       {
-        facilityName: "CK Birla Hospital",
-        address: "Jaipur Rajasthan",
-        position: "Staff Nurse",
-        department: "Nursing",
-        education: "B.sc GNM",
-        experience: "2+ years",
-        salary: "Competitive",
-        notes: "Please send your resume atrecruitment.rbh@ckbirlahospitals.com",
-        applyUrl: "https://ckbirlahospitals.com/rbh/careers",
-        datePosted: "2025-08-01T10:00:00Z", // More than 3 months old
-        logoText: "OP"
-      },
-      {
-        facilityName: "American Hospital",
-        address: "12 American Hospital - 15th St - Oud Metha - Dubai",
-        position: "Senior Staff Nurse",
-        department: "Breast Care Clinic",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "3-5 years",
-        salary: "Salary Not Disclosed",
-        notes: "Degree in Nursing (minimum two (2) years course duration) and Registration as a Registered Nurse from Canada, USA, UK, Ireland, South Africa, New Zealand, and Australia. For UAE nationals graduates of UAE or non-UAE universities are exempted from the experience and clinical training requirements for the applied title. (UAE National must submit a copy of their birth certificate and the mother’s family book). Non-UAE national graduates from UAE universities are required to successfully complete six (6) months of clinical training post-graduation in an APS health facility (except for Registered and assistant Nurse titles)",
-        applyUrl: "https://fa-epvs-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs/preview/3561/?lastSelectedFacet=CATEGORIES&selectedCategoriesFacet=300000004016501",
-        datePosted: "2025-08-29T09:30:00Z",
-        logoText: "AH"
-      },
-
-      {
-        facilityName: "American Hospital",
-        address: "12 American Hospital - 15th St - Oud Metha - Dubai",
-        position: "Staff Nurse",
-        department: "Surgery & Urology Clinic",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Degree in Nursing (minimum two (2) years course duration) and Registration as a Registered Nurse from Canada, USA, UK, Ireland, South Africa, New Zealand, and Australia. For UAE nationals graduates of UAE or non-UAE universities are exempted from the experience and clinical training requirements for the applied title. (UAE nationals must submit a copy of their birth certificate and the mother's family book). Non-UAE national graduates from UAE universities are required to successfully complete six (6) months of clinical training post-graduation in an APS health facility (except for Registered and assistant Nurse titles).",
-        applyUrl: "https://fa-epvs-saasfaprod1.fa.ocs.oraclecloud.com/hcmUI/CandidateExperience/en/sites/CX_1/jobs/preview/3525/?lastSelectedFacet=CATEGORIES&selectedCategoriesFacet=300000004016501",
-        datePosted: "2025-08-29T09:30:00Z",
-        logoText: "AH"
-      },
-
-      {
-        facilityName: "International Morden Hospital",
-        address: "Port Rashid Road Al Mankhool Area - Dubai",
-        position: "Registered Nurse",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Provides age appropriate patient care according to the Nursing Scope of Practice as defined by the regulatory body.",
-        applyUrl: "https://www.imh.ae/careers/",
-        datePosted: "2025-08-29T09:30:00Z",
-        logoText: "IMH"
-      },
-
-      {
-        facilityName: "King's College Hospital",
-        address: "King’s College Hospital London - Dubai Hills - Dubai",
-        position: "Cardiac Operating Theatre Nurse",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "Mandatory Skills equivelent your degree, Intubation, ICU Specific Medical Equipment Management",
-        applyUrl: "https://effb.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/KingsCareerPortal/jobs/preview/197/?lastSelectedFacet=CATEGORIES&selectedCategoriesFacet=300000001407409",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "KCH"
-      },
-
-      {
-        facilityName: "King's College Hospital",
-        address: "King’s College Hospital London - Dubai Hills - Dubai",
-        position: "School Nurse",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "Salary Not Disclosed",
-        notes: "We are seeking a compassionate, qualified, and proactive School Nurse to join our vibrant school community in Dubai. The ideal candidate will play a vital role in promoting the health and well-being of our students and staff, ensuring a safe and supportive environment for learning.",
-        applyUrl: "https://effb.fa.em3.oraclecloud.com/hcmUI/CandidateExperience/en/sites/KingsCareerPortal/jobs/preview/197/?lastSelectedFacet=CATEGORIES&selectedCategoriesFacet=300000001407409",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "KCH"
-      },
-
-      {
-        facilityName: "CallDoctor",
-        address: "107 Ibn Battuta Gate Offices - Garden Cross Rd - Dubai",
-        position: "Registered Nurse",
-        department: "Nursing",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "2+ years",
-        salary: "5500-7000 AED",
-        notes: "Assist patient, excellent IV insertion, Good Communication skills",
-        applyUrl: "https://calldoctor.ae/careers/",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "CD"
-      },
-      {
-        facilityName: "Enternal Hospitals",
-        address: "Jawahar Circle, Jaipur Rajasthan, India",
-        position: "Registered Nurse",
-        department: "All department",
-        education: "BSc/BSN",
-        experience: "2-5+ years ICU",
-        salary: "Not Disclosed by HR",
-        notes: "Candidates are welcome to apply for this rewarding role in a state-of-the-art facility.",
-        applyUrl: "https://www.eternalhospital.com/career.php",
-        datePosted: "2025-08-29T12:00:00Z",
-        logoText: "CC"
-      },
-      {
-        facilityName: "Manipals Hospitals",
-        address: "Mysuru, India",
-        position: "Senior Nurse ICU",
-        department: "ICU",
-        education: "Bachelor's degree in Nursing (BScN) or equivalent",
-        experience: "6-10 years",
-        salary: "Salary Not Disclosed",
-        notes: "Mandatory Skills Mechanical Ventilation and Respiratory Care, Intubation, ICU Specific Medical Equipment Management",
-        applyUrl: "https://careers.manipalhospitals.com/manipalhospitals/jobview/senior-nurse-mysuru-2024100706233613?id=546257",
-        datePosted: "2025-08-25T09:30:00Z",
-        logoText: "AH"
-      },
-    ];
 
     const $ = (q, el=document) => el.querySelector(q);
 
@@ -4015,10 +3779,10 @@ ${job.notes ? `\n*Notes:*\n${escapeHtml(job.notes)}\n` : ''}
     }
 
     // Init
-    autoDeleteOldPosts();
+    autoDeleteOldPosts(); // This can be removed if you manage jobs in JSON
     setupInteractions();
     setupQuickPost();
-    render();
+    loadJobs(); // Call loadJobs() instead of render()
 
         setLanguage(localStorage.getItem('medinest-lang') || 'en');
         showScreen('home-screen');
