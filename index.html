@@ -3538,7 +3538,7 @@ let jobs = []; // Start with an empty array
     async function loadJobs() {
       try {
         // IMPORTANT: Replace the URL with the actual URL of your jobs.json file on GitHub
-        const response = await fetch('https://github.com/Suresh-design462/suresh-design462.github.io/blob/main/jobs.json'); 
+        const response = await fetch('jobs.json'); 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
