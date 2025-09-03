@@ -25,6 +25,11 @@ Third-Party Advertising: We use third-party advertising services to serve ads wh
 Our advertising partner(s) include: Adsterra
 We recommend that you review the privacy policy of our advertising partner(s) to understand
 how they handle your data. For example, you can find adsterra policy here:
+**https://adsterra.com/privacy-policy-managed/**
+
+**Data Deletion**
+Since our app does not collect or store any personal data, we do not hold any information to delete.
+However, if you have concerns about data collected by third-party ad providers (such as Adstera), you may contact us at didels940@gmail.com, and we will guide you on how to manage or request deletion of such data from the relevant third-party provider.
 
 **https://adsterra.com/privacy-policy-managed/**
 
@@ -34,7 +39,6 @@ Changes to This Privacy Policy We may update our Privacy Policy from time to tim
 
 
 **JOB PORTAL DISCLAIMER**
-
 
 **1. Our Role as a Service Provider**
 InstaNurse (Job4Nurse) is a job aggregation and information service. We are not a recruitment agency and do not directly offer or announce any job vacancies. Our platform is designed to help you find and access job opportunities that have been officially published by healthcare organizations on their career websites.
