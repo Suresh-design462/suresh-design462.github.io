@@ -2144,8 +2144,7 @@
         </div>
         
         <div id="policy-modal" class="modal-overlay"><div class="modal-content"><button class="modal-close-btn">×</button><h2 id="modal-title"></h2><div id="modal-text"></div></div></div>
-        <div id="rate-us-modal" class="modal-overlay"><div class="modal-content" style="text-align: center;"><button class="modal-close-btn">×</button><h2 data-lang-key="rate_us_title"></h2><p data-lang-key="rate_us_desc"></p><br><button class="btn btn-primary" id="rate-now-btn" data-lang-key="rate_now"></button></div></div>
-    </div>
+        
     
     <script>
  
@@ -2312,7 +2311,7 @@ InstaNurse (job4nurse) is not responsible for any personal data you submit to th
         
         document.getElementById('terms-link').addEventListener('click', (e) => { e.preventDefault(); showPolicyModal('terms'); });
         document.querySelectorAll('.modal-close-btn').forEach(btn => btn.addEventListener('click', hideAllModals));
-        document.getElementById('rate-now-btn').addEventListener('click', () => { window.open('https://indusapp.store/yjopgds2'); hideAllModals(); });
+        
         
         history.pushState(null, null, location.href);
         window.addEventListener('popstate', function (event){ if(currentScreenId !== 'home-screen'){ showScreen('home-screen'); history.pushState(null, null, location.href); } else { rateModal.style.display = 'flex'; } });
