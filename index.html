@@ -3622,21 +3622,18 @@ let jobs = []; // Start with an empty array
     }
 
     function populateCities(country) {
-  const citySelect = $('#city');
-  citySelect.innerHTML = '<option value="">All Cities</option>'; // Reset
-
-  if (country && locations[country]) {
-    locations[country].forEach(city => {
-      const option = document.createElement('option');
-      option.value = city;
-      option.textContent = city;
-      citySelect.appendChild(option);
-    });
-  }
-
-  // Reset selected city when country changes
-  citySelect.value = "";
+    const citySelect = $('#city');
+    citySelect.innerHTML = '<option value="">All Cities</option>'; // Reset
+    if (country && locations[country]) {
+        locations[country].forEach(city => {
+            const option = document.createElement('option');
+            option.value = city;
+            option.textContent = city;
+            citySelect.appendChild(option);
+        });
+    }
 }
+
 
 
     function jobHTML(j, index){
@@ -3697,7 +3694,8 @@ let jobs = []; // Start with an empty array
         .sort((a,b)=> new Date(b.datePosted) - new Date(a.datePosted))
         .filter(j => {
             const countryMatch = !country || j.address.toLowerCase().includes(country.toLowerCase());
-            const cityMatch = !city || j.address.toLowerCase().includes(city.toLowerCase());
+            const cityMatch = !city || j.address.toLowerCase().includes(city.toLowerCase().split(',')[0]);
+
             if (!countryMatch || !cityMatch) return false;
 
             if (!searchTerm) return true;
