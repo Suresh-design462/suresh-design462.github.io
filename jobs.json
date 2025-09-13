@@ -118,7 +118,7 @@
       },
       {
         "facilityName": "Emirates Hospitals Group",
-        "address": "Abu Dhabi",
+        "address": "Abu Dhabi UAE",
         "position": "Nursing Staff",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -131,7 +131,7 @@
       },
       {
         "facilityName": "NMC Speciality Hospital",
-        "address": "Abu Dhabi",
+        "address": "Abu Dhabi UAE",
         "position": "Registered Nurse",
         "department": "Outpatient Clinic",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -144,7 +144,7 @@
       },
       {
         "facilityName": "SEHA - Corniche Hospital",
-        "address": "Abu Dhabi",
+        "address": "Abu Dhabi UAE",
         "position": "Practical Nurse - STMC",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -157,7 +157,7 @@
       },
       {
         "facilityName": "LLH Hospital",
-        "address": "Abu Dhabi",
+        "address": "Abu Dhabi UAE",
         "position": "Senior Nurse ICU",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -170,7 +170,7 @@
       },
       {
         "facilityName": "Medeor 24×7 Hospital",
-        "address": "Abu Dhabi",
+        "address": "Abu Dhabi UAE",
         "position": "Registered Nurse",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -183,7 +183,7 @@
       },
       {
         "facilityName": "Ahalia Hospital",
-        "address": "Abu Dhabi",
+        "address": "Abu Dhabi UAE",
         "position": "Registered Nurse",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -222,7 +222,7 @@
       },
       {
         "facilityName": "Medanta Hospital Noida",
-        "address": "Gurugram",
+        "address": "Gurugram INDIA",
         "position": "Clinical Instructor",
         "department": "Nursing",
         "education": "Bsc Nursing / Msc Nursing / Post Basic Nursing",
@@ -248,7 +248,7 @@
       },
       {
         "facilityName": "American Hospital",
-        "address": "Dubai",
+        "address": "Dubai UAE",
         "position": "Senior Staff Nurse",
         "department": "Breast Care Clinic",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -262,7 +262,7 @@
 
       {
         "facilityName": "American Hospital",
-        "address": "Dubai",
+        "address": "Dubai UAE",
         "position": "Staff Nurse",
         "department": "Surgery & Urology Clinic",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -276,7 +276,7 @@
 
       {
         "facilityName": "International Morden Hospital",
-        "address": "Dubai",
+        "address": "Dubai UAE",
         "position": "Registered Nurse",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -290,7 +290,7 @@
 
       {
         "facilityName": "King's College Hospital",
-        "address": "Dubai",
+        "address": "Dubai UAE",
         "position": "Cardiac Operating Theatre Nurse",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -304,7 +304,7 @@
 
       {
         "facilityName": "King's College Hospital",
-        "address": "Dubai",
+        "address": "Dubai UAE",
         "position": "School Nurse",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
@@ -318,7 +318,7 @@
 
       {
         "facilityName": "CallDoctor",
-        "address": "Dubai",
+        "address": "Dubai UAE",
         "position": "Registered Nurse",
         "department": "Nursing",
         "education": "Bachelor's degree in Nursing (BScN) or equivalent",
