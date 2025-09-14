@@ -110,8 +110,18 @@
             aspect-ratio: 1 / 1; /* Force square aspect ratio */
         }
         .calculator-card:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15); }
-        .calculator-card .icon { font-size: 2.5em; margin-bottom: 10px; }
-        .calculator-card .name { font-weight: 500; font-size: 1em; }
+        /* This makes the style apply to BOTH card types */
+.calculator-card .icon, .external-link-card .icon {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+    /* It's important to keep the icon div empty for proper alignment */
+    line-height: 1; 
+}
+
+.calculator-card .name, .external-link-card .name {
+    font-weight: 500;
+    font-size: 1em;
+}
         /* Removed .card-tbsa specific grid-column span */
         .calculator-view { display: none; flex-direction: column; min-height: 100vh; animation: fadeIn 0.5s ease; }
         .calculator-header { margin-bottom: 0; justify-content: flex-start; }
@@ -1467,7 +1477,12 @@
 <body>
    <div id="app-container" class="app-container">
         <div id="home-screen"><header class="header"><div class="header-main-content"><span class="header-title" data-lang-key="appName"></span><span id="live-datetime" class="live-datetime"></span></div><div class="language-selector"><span class="globe-icon"></span><select id="lang-select"><option value="en">English</option><option value="hi">हिन्दी</option><option value="ta">தமிழ்</option><option value="te">తెలుగు</option><option value="kn">ಕನ್ನಡ</option><option value="gu">ગુજરાતી</option><option value="pa">ਪੰਜਾਬੀ</option><option value="mr">मराठी</option><option value="raj">राजस्थानी</option></select></div></header><div class="ad-bar"></div><main class="main-content"><div class="calculator-grid">
-            <a href="#government-jobs" class="external-link-card" data-screen="government-jobs-screen"><div class="icon">🏥</div><div class="name" data-lang-key="government_jobs"></div></a>
+            <a href="government_jobs.html" class="external-link-card">
+    <div class="icon">
+        <img src="icons/govt-job-icon.png" alt="Government Jobs" style="width: 56px; height: 56px;">
+    </div>
+    <div class="name">Government Jobs</div>
+            </a>
           <a href="#aiims-norcet-9-2025" class="calculator-card" data-screen="aiims-norcet-9-2025-screen"><div class="icon">🏥</div><div class="name" data-lang-key="aiims_norcet_9_2025"></div></a>
             <a href="#job-portal" class="calculator-card" data-screen="job-portal-screen"><div class="icon">🧑‍⚕️</div><div class="name" data-lang-key="job_portal"></div></a>
           <!-- Aushadhi Gyan Card -->
