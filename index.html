@@ -3778,6 +3778,121 @@ const renderDetailView = (drugKey, data) => {
                 </div>
             `
         },
+
+        dopesMnemonic: {
+        title: "The DOPES: Life in Danger",
+        subtitle: "A rapid troubleshooting tool for intubated patients in critical situations.",
+        infograph: "https://placehold.co/1200x400/3b82f6/ffffff?text=Intubation+can+be+Failed",
+        content: `
+            <h2 class="text-2xl font-bold text-gray-900 mb-2">The DOPE Mnemonic: A Comprehensive Guide</h2>
+            <p class="mb-6 text-gray-600">The DOPE mnemonic is a rapid-fire checklist used by healthcare professionals to quickly troubleshoot a sudden decline in an intubated patient's condition. It stands for Displacement, Obstruction, Pneumothorax, and Equipment failure.</p>
+            <div class="space-y-8">
+                <div class="bg-gray-100 p-6 rounded-xl border border-blue-200">
+                    <h3 class="text-xl font-semibold text-gray-800 info-header mb-3">D: Displacement</h3>
+                    <p class="text-gray-700"><strong>Meaning:</strong> The endotracheal tube (ETT) is no longer in its correct position. It may have moved too far in (advanced) or too far out (retracted).</p>
+                    <p class="text-gray-700"><strong>Signs:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li>The patient's clinical status is worsening.</li>
+                        <li><strong>Unilateral breath sounds:</strong> If the tube has advanced too far into the right or left main bronchus, you may hear diminished or absent breath sounds on the opposite side.</li>
+                        <li><strong>Cuff leak:</strong> If the tube has been pulled out too far, the cuff may no longer be seated in the trachea, causing air to leak and the ventilator alarm to sound.</li>
+                        <li><strong>Lack of chest rise:</strong> The chest may not rise at all, or only on one side.</li>
+                        <li><strong>High airway pressures:</strong> Can be a sign of the tube being pushed against the carina (the point where the trachea splits).</li>
+                        <li><strong>The tube's centimeter marking:</strong> The number at the lip or gum line has changed, indicating the tube has moved.</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4"><strong>Example:</strong> A patient's tube marking was 23 cm at the lip. After repositioning, the nurse notices it is now at 26 cm, and breath sounds are only audible on the right side. This indicates the tube has advanced into the right mainstem bronchus. </p>
+                    <p class="text-gray-700 mt-4"><strong>Action:</strong> Immediately check the tube's position and auscultate bilateral lung fields to ensure equal breath sounds. If displacement is suspected, the tube may need to be withdrawn or re-advanced slightly by a trained professional. A chest X-ray may be needed to confirm placement.</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl border border-blue-200">
+                    <h3 class="text-xl font-semibold text-gray-800 info-header mb-3">O: Obstruction</h3>
+                    <p class="text-gray-700"><strong>Meaning:</strong> The endotracheal tube is blocked by various substances.</p>
+                    <p class="text-gray-700"><strong>Causes:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li><strong>Secretions:</strong> Thick mucus or phlegm can accumulate and block the tube, especially in patients with pneumonia or COPD.</li>
+                        <li><strong>Blood:</strong> Bleeding in the airway can clot and obstruct the tube.</li>
+                        <li><strong>Kinking:</strong> The tube itself may be bent or kinked due to patient movement, poor head positioning, or the tube getting caught under their shoulder.</li>
+                        <li><strong>Biting:</strong> The patient may be biting down on the tube, especially if not adequately sedated or if the bite block has slipped. This is common in patients waking up from anesthesia.</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4"><strong>Example:</strong> A patient's ventilator high-pressure alarm starts going off. A nurse attempts to pass a suction catheter through the ETT but meets immediate resistance and cannot advance it. This indicates a complete blockage, likely due to a mucus plug. </p>
+                    <p class="text-gray-700 mt-4"><strong>Action:</strong> Pass a suction catheter through the ETT to check for resistance and clear the blockage. If the suction catheter cannot pass, it indicates a complete obstruction and the tube may need to be replaced. Ensure the patient has a bite block to prevent them from biting the tube.</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl border border-blue-200">
+                    <h3 class="text-xl font-semibold text-gray-800 info-header mb-3">P: Pneumothorax</h3>
+                    <p class="text-gray-700"><strong>Meaning:</strong> There is a collection of air in the pleural space, outside the lung. This air can collapse the lung and is a life-threatening emergency.</p>
+                    <p class="text-gray-700"><strong>Signs:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li><strong>Sudden onset:</strong> The patient experiences a sudden drop in oxygen saturation, chest pain, or hypotension.</li>
+                        <li><strong>Unilateral breath sounds:</strong> Absent or diminished breath sounds on the affected side.</li>
+                        <li><strong>Hyperresonance:</strong> The affected side sounds like a hollow drum when percussed.</li>
+                        <li><strong>Tracheal shift:</strong> The trachea shifts away from the affected side, a very late and ominous sign.</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4"><strong>Example:</strong> A patient on a ventilator suddenly becomes hypotensive and a nurse hears absent breath sounds and hyperresonance on the patient's right side. This suggests a pneumothorax has occurred.</p>
+                    <p class="text-gray-700 mt-4"><strong>Action:</strong> This is a medical emergency. The care team must be notified immediately. A chest X-ray is needed to confirm the diagnosis, and a chest tube may be inserted to relieve the pressure and re-expand the lung.</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl border border-blue-200">
+                    <h3 class="text-xl font-semibold text-gray-800 info-header mb-3">E: Equipment Failure</h3>
+                    <p class="text-gray-700"><strong>Meaning:</strong> The mechanical ventilator or the oxygen supply system is not functioning correctly.</p>
+                    <p class="text-gray-700"><strong>Causes:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li><strong>Ventilator malfunction:</strong> This could be a power failure, a circuit disconnection, or a faulty alarm system.</li>
+                        <li><strong>Oxygen supply failure:</strong> The oxygen line may have been disconnected from the wall.</li>
+                        <li><strong>Humidifier malfunction:</strong> A broken humidifier can cause the patient's airway to dry out and lead to complications.</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4"><strong>Example:</strong> A patient's ventilator alarm suddenly goes quiet and the screen is blank. This is a clear sign of equipment failure, and immediate intervention is needed to prevent respiratory arrest.</p>
+                    <p class="text-gray-700 mt-4"><strong>Action:</strong> The first step is to immediately disconnect the patient from the ventilator and manually bag them using an Ambu bag (manual resuscitation bag) with supplemental oxygen. This ensures the patient is being ventilated while the ventilator is being checked by a respiratory therapist or biomed technician. Check for loose connections, tubing leaks, or power issues.</p>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl border border-blue-200">
+                    <h3 class="text-xl font-semibold text-gray-800 info-header mb-3">S: Stacked Breaths (Extension)</h3>
+                    <p class="text-gray-700"><strong>Meaning:</strong> This is an extension of the DOPE mnemonic to include the possibility of air in the stomach or air trapping in the lungs.</p>
+                    <p class="text-gray-700"><strong>Causes:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li><strong>Gastric Insufflation:</strong> Air is going into the stomach instead of the lungs, which can happen, especially with manual bagging. This can impair ventilation by pushing up on the diaphragm.</li>
+                        <li><strong>Stacked Breaths (Auto-PEEP):</strong> The patient does not have enough time to exhale fully before the next mechanical breath is delivered. This leads to air trapping, which increases intrathoracic pressure and can cause barotrauma and hemodynamic instability.</li>
+                    </ul>
+                    <p class="text-gray-700 mt-4"><strong>Example:</strong> The patient's chest is not rising, but their stomach is distended and firm. This is a clear sign of gastric insufflation. Another example is a patient's ventilator showing a high respiratory rate and increasing pressures, suggesting stacked breaths.</p>
+                    <p class="text-gray-700 mt-4"><strong>Action:</strong></p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li><strong>Gastric Insufflation:</strong> Decompress the stomach using an orogastric (OG) or nasogastric (NG) tube.</li>
+                        <li><strong>Stacked Breaths:</strong> Increase the expiratory time on the ventilator by adjusting the respiratory rate or the inspiratory time. This requires immediate collaboration with a respiratory therapist and the medical team.</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="mt-8">
+                <h3 class="text-xl font-semibold text-gray-800 info-header mb-3">Additional Information</h3>
+                <div class="bg-gray-100 p-6 rounded-xl border border-gray-200">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Why and When to Perform DOPE Check?</h4>
+                    <p class="text-gray-700">The DOPE check provides a structured approach to a chaotic and high-stress situation. It prevents the healthcare provider from getting overwhelmed and ensures that critical, time-sensitive problems are addressed first. It's a lifesaver because it systematically guides the provider to the most common and life-threatening causes of intubation failure.</p>
+                    <p class="text-gray-700 mt-2"><strong>When to perform:</strong> The DOPE check is performed whenever a sudden and unexplained deterioration in an intubated patient occurs. This includes:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li>Sudden drop in oxygen saturation.</li>
+                        <li>Sudden decrease in blood pressure.</li>
+                        <li>Sudden onset of high peak airway pressures on the ventilator.</li>
+                        <li>Lack of bilateral chest rise.</li>
+                        <li>Inability to ventilate the patient with an Ambu bag.</li>
+                        <li>Ventilator alarms sounding (e.g., high-pressure alarm, low-tidal volume alarm).</li>
+                    </ul>
+                </div>
+                <div class="bg-gray-100 p-6 rounded-xl border border-gray-200 mt-4">
+                    <h4 class="text-lg font-semibold text-gray-800 mb-2">Nurse's Responsibility in a "DOPE" Check</h4>
+                    <p class="text-gray-700">The nurse plays a critical and often first-responder role in this situation. Their responsibilities include:</p>
+                    <ul class="list-disc list-inside space-y-2 text-gray-700 mt-2">
+                        <li><strong>Immediate Assessment:</strong> The nurse is typically the first to recognize the patient's change in status. They must immediately assess the patient's vital signs, breath sounds, and the ventilator's alarms and settings.</li>
+                        <li><strong>Initiating the DOPE Mnemonic:</strong> The nurse should begin the systematic DOPE check.
+                            <ul class="list-['-_'] list-inside ml-6 mt-2 space-y-1">
+                                <li><strong>D:</strong> Check the tube's position and the markings at the lip/gum. Auscultate for equal breath sounds.</li>
+                                <li><strong>O:</strong> Attempt to pass a suction catheter to clear any potential obstruction.</li>
+                                <li><strong>P:</strong> Check for tracheal deviation and listen for unilateral breath sounds.</li>
+                                <li><strong>E:</strong> Immediately disconnect the patient from the ventilator and begin manual bagging. This is the most crucial step for equipment failure.</li>
+                            </ul>
+                        </li>
+                        <li><strong>Calling for Help:</strong> Simultaneously with the initial assessment, the nurse must call for help. This includes notifying the physician, the respiratory therapist, and other members of the rapid response or code team.</li>
+                        <li><strong>Assisting with Interventions:</strong> The nurse assists the medical team with necessary interventions, such as preparing for re-intubation, setting up for a chest tube insertion, adjusting patient position, administering medications, and providing manual ventilation.</li>
+                        <li><strong>Documentation:</strong> The nurse must accurately and promptly document all events, including the patient's status, the interventions performed, and the response to those interventions. This includes documenting ventilator settings and any changes made.</li>
+                        <li><strong>Patient and Family Communication:</strong> While the priority is the patient, the nurse may also be responsible for briefly communicating with the family about what is happening and providing reassurance.</li>
+                    </ul>
+                </div>
+            </div>
+        `
+    },
         // (Include all other conditions data from your file here)
          hypokalemia: { 
     title: "Hypokalemia Management", 
