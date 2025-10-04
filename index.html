@@ -7855,6 +7855,456 @@ initial_trauma_management: {
     `
 },
 
+    hyponatremia: {
+        title: "HYPONATREMIA",
+        subtitle: "🧂The Most Common Electrolyte Disorder",
+        meta: {
+            definition: "Serum sodium concentration < 135 mEq/L.",
+            critical_danger: "Cerebral Edema from cellular swelling.",
+            max_correction_rate: "< 8 mEq/L in any 24-hour period (to prevent ODS)."
+        },
+        styles: `
+            /* CSS is SCOPED to .hyponatremia-post-wrapper to prevent theme interference */
+            .hyponatremia-post-wrapper {
+                --primary-color: #007BFF;
+                --secondary-color: #28a745;
+                --background-color: #f8f9fa;
+                --card-background: #ffffff;
+                --text-color: #343a40;
+                --heading-color: #0056b3;
+                --font-family-main: 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+                --box-shadow: none;
+                font-family: var(--font-family-main);
+                color: var(--text-color);
+                line-height: 1.7;
+                background-color: var(--card-background);
+                padding: 40px;
+                margin: 0;
+                width: 100%;
+                box-sizing: border-box;
+            }
+            .hyponatremia-content-area {
+                max-width: 900px;
+                margin: 0 auto;
+            }
+            /* --- HEADINGS & TITLE --- */
+            .hyponatremia-post-wrapper .post-title {
+                font-size: 2.5rem;
+                color: var(--heading-color);
+                text-align: center;
+                margin-bottom: 5px;
+                border-bottom: 3px solid var(--primary-color);
+                padding-bottom: 10px;
+                font-weight: 700;
+            }
+            .hyponatremia-post-wrapper .post-subtitle {
+                font-size: 1.5rem;
+                color: var(--primary-color);
+                text-align: center;
+                margin-bottom: 30px;
+                font-weight: 400;
+            }
+            .hyponatremia-post-wrapper h2 {
+                font-size: 2rem;
+                color: var(--primary-color);
+                padding: 10px 0;
+                border-left: 5px solid var(--secondary-color);
+                padding-left: 15px;
+                margin-top: 40px;
+                font-weight: 600;
+            }
+            .hyponatremia-post-wrapper h3 {
+                font-size: 1.4rem;
+                color: var(--heading-color);
+                border-bottom: 1px solid #ddd;
+                padding-bottom: 5px;
+                margin-top: 30px;
+                font-weight: 500;
+            }
+            /* --- PARAGRAPH & INTRO --- */
+            .hyponatremia-post-wrapper .intro-paragraph {
+                font-size: 1.15rem;
+                font-style: italic;
+                color: #5a6268;
+                border-left: 5px solid var(--primary-color);
+                padding: 15px 20px;
+                margin-bottom: 30px;
+                background-color: #e9ecef;
+                border-radius: 8px;
+            }
+            .hyponatremia-post-wrapper p {
+                margin-bottom: 15px;
+                text-align: justify;
+            }
+            /* --- LISTS & CORE CONCEPTS --- */
+            .hyponatremia-post-wrapper ul {
+                list-style: none;
+                padding-left: 0;
+            }
+            .hyponatremia-post-wrapper ul li {
+                padding: 8px 0;
+                margin-bottom: 5px;
+                border-left: 3px solid #ced4da;
+                padding-left: 15px;
+            }
+            .hyponatremia-post-wrapper ul li strong {
+                color: var(--primary-color);
+            }
+            .hyponatremia-post-wrapper .critical-concept {
+                background-color: #f0f8ff;
+                border: 1px solid #cce5ff;
+                padding: 20px;
+                margin: 20px 0;
+                border-radius: 8px;
+            }
+            .hyponatremia-post-wrapper .critical-concept strong {
+                color: #d9534f;
+                font-weight: 700;
+            }
+            /* --- TABLES --- */
+            .hyponatremia-post-wrapper .table-wrapper {
+                overflow-x: auto;
+                margin: 25px 0;
+                box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+                border-radius: 8px;
+            }
+            .hyponatremia-post-wrapper table {
+                width: 100%;
+                border-collapse: separate;
+                border-spacing: 0;
+                min-width: 600px;
+                text-align: left;
+            }
+            .hyponatremia-post-wrapper th, .hyponatremia-post-wrapper td {
+                padding: 15px;
+                border-bottom: 1px solid #dee2e6;
+            }
+            .hyponatremia-post-wrapper th {
+                background-color: var(--primary-color);
+                color: var(--card-background);
+                font-weight: 600;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                position: sticky;
+                top: 0;
+                z-index: 10;
+            }
+            .hyponatremia-post-wrapper table tr:first-child th:first-child { border-top-left-radius: 8px; }
+            .hyponatremia-post-wrapper table tr:first-child th:last-child { border-top-right-radius: 8px; }
+            .hyponatremia-post-wrapper tr:nth-child(even) {
+                background-color: #f2f2f2;
+            }
+            .hyponatremia-post-wrapper .table-diagnostic tr:last-child {
+                background-color: #fff3cd;
+                font-weight: 600;
+            }
+            /* --- MATH/CODE BLOCK STYLES --- */
+            .hyponatremia-post-wrapper .math-equation {
+                display: block;
+                background-color: #eee;
+                color: var(--text-color);
+                padding: 15px;
+                margin: 20px auto;
+                border-radius: 8px;
+                overflow-x: auto;
+                text-align: center;
+                font-size: 1.1rem;
+                font-family: Consolas, 'Courier New', monospace;
+            }
+            /* --- HORIZONTAL RULE (Divider) --- */
+            .hyponatremia-post-wrapper hr {
+                border: none;
+                height: 3px;
+                background-color: #d8d8d8;
+                margin: 40px 0;
+                border-radius: 3px;
+            }
+            /* --- SPECIAL ALERT/NOTE --- */
+            .hyponatremia-post-wrapper .nursing-section {
+                background-color: #e6f7ff;
+                border: 2px dashed var(--primary-color);
+                padding: 25px;
+                border-radius: 10px;
+                margin-top: 40px;
+            }
+            .hyponatremia-post-wrapper .nursing-section h3 {
+                color: #d9534f;
+                border-bottom: 2px solid #d9534f;
+                margin-top: 0;
+            }
+            /* --- JAVASCRIPT ANIMATION (FADE-IN) --- */
+            .hyponatremia-post-wrapper .fade-in {
+                opacity: 0;
+                transform: translateY(20px);
+                transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+            }
+            .hyponatremia-post-wrapper .fade-in.appear {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        `,
+        script: `
+            document.addEventListener('DOMContentLoaded', () => {
+                // Scope the selector to the wrapper
+                const faders = document.querySelectorAll('.hyponatremia-post-wrapper .fade-in');
+
+                const appearOptions = {
+                    threshold: 0.2,
+                    rootMargin: "0px 0px -50px 0px"
+                };
+
+                const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                    entries.forEach(entry => {
+                        if (!entry.isIntersecting) {
+                            return;
+                        } else {
+                            entry.target.classList.add('appear');
+                            appearOnScroll.unobserve(entry.target);
+                        }
+                    });
+                }, appearOptions);
+
+                faders.forEach(fader => {
+                    appearOnScroll.observe(fader);
+                });
+            });
+        `,
+        content: `
+            <div class="hyponatremia-post-wrapper">
+                <div class="hyponatremia-content-area">
+
+                    <header>
+                        <h1 class="post-title fade-in">HYPONATREMIA</h1>
+                        <h2 class="post-subtitle fade-in">The Most Common Electrolyte Disorder</h2>
+                    </header>
+                    <div class="separator" style="clear: both;">
+                        <a href="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiO0n8SWIEGyXaYfeBCkxmdCbF6aynPIATdB6kczbqJSyxbG2qRbIBlDgUK9bCMIy5zzSFFMjhJfXHB9NJ42tb7kICPKNOIcdCF97hsXzGKJliscrDP8ssAcVGTyJzZ0kE7_0Cmmb_keQbcGdHjXqwLndXPNZnlpPSWGanKuJC7rCPfFqB57MgemHCsIlLM/s1600/Hyponatremia%20InstaNurse.jpg" style="display: block; padding: 1em 0; text-align: center; ">
+                            <img alt="" border="0" data-original-height="1024" data-original-width="1820" src="https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEiO0n8SWIEGyXaYfeBCkxmdCbF6aynPIATdB6kczbqJSyxbG2qRbIBlDgUK9bCMIy5zzSFFMjhJfXHB9NJ42tb7kICPKNOIcdCF97hsXzGKJliscrDP8ssAcVGTyJzZ0kE7_0Cmmb_keQbcGdHjXqwLndXPNZnlpPSWGanKuJC7rCPfFqB57MgemHCsIlLM/s1600/Hyponatremia%20InstaNurse.jpg"/>
+                        </a>
+                    </div>
+
+                    <p class="intro-paragraph fade-in">
+                        Hyponatremia, defined as a serum sodium concentration less than $135\ \text{mEq/L}$ (or $135\ \text{mmol/L}$), is the most common electrolyte disorder seen in clinical practice. It reflects a relative excess of total body water compared to total body sodium content, leading to a decrease in plasma osmolality and the subsequent movement of water into the cells, which can cause cellular swelling, especially in the brain.
+                    </p>
+
+                    <h2 class="fade-in">1. Definition and Core Pathophysiology</h2>
+                    <h3 class="fade-in">Definition and Core Pathophysiology</h3>
+                    
+                    <ul class="fade-in">
+                        <li><strong>Definition:</strong> Serum sodium concentration $(\text{Na}^+) < 135\ \text{mEq/L}$.</li>
+                    </ul>
+                    
+                    <div class="critical-concept fade-in">
+                        <h3 style="color: var(--primary-color);">The Critical Concept (Edelman Equation)</h3>
+                        <p>Serum sodium is a reflection of the ratio of total body solute (primarily $\text{Na}^+$ and $\text{K}^+$) to total body water (TBW). </p>
+                        <div class="math-equation">
+                            $$\text{SNa} \approx \frac{\text{Total Exchangeable Solute}}{\text{Total Body Water}}$$
+                        </div>
+                        <p>Hyponatremia, in its true form (<strong>hypotonic hyponatremia</strong>), signifies a relative excess of water for the amount of solute present, leading to decreased plasma osmolality.</p>
+                        <p><strong>Cellular Danger:</strong> The primary danger is <strong>cerebral edema</strong>. The low plasma osmolality causes water to shift via osmosis from the extracellular space into the brain cells (neurons and glial cells). This cell swelling is initially buffered by the brain but, if acute or severe, leads to herniation and death.</p>
+                    </div>
+                    
+                    <h2 class="fade-in">2. Classification of Hyponatremia: The Diagnostic Cascade</h2>
+                    <p class="fade-in">The first crucial step is to rule out conditions that cause *low serum $\text{Na}^+$ without low plasma osmolality*.</p>
+
+                    <h3 class="fade-in">Step 1: Assess Plasma Osmolality ($\text{P}_{\text{Osm}}$)</h3>
+                    <div class="table-wrapper fade-in">
+                        <table class="table-diagnostic">
+                            <thead>
+                                <tr>
+                                    <th>Category</th>
+                                    <th>$\text{P}_{\text{Osm}}$</th>
+                                    <th>Cause</th>
+                                    <th>Examples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Isotonic</strong></td>
+                                    <td>Normal ($275 - 290\ \text{mOsm/kg}$)</td>
+                                    <td><strong>Pseudohyponatremia</strong> (Lab artifact, rare)</td>
+                                    <td>Extreme hyperlipidemia or hyperproteinemia (the non-water components take up a larger volume of the blood sample, artificially lowering the $\text{Na}^+$ reading).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hypertonic</strong></td>
+                                    <td>Elevated ($>290\ \text{mOsm/kg}$)</td>
+                                    <td>Addition of an effective osmole (solute that does not freely cross cell membranes, pulling water out of the cells)</td>
+                                    <td><strong>Hyperglycemia</strong> (most common), Mannitol administration. <strong>Example:</strong> Diabetic Ketoacidosis (DKA) with severe hyperglycemia.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hypotonic</strong></td>
+                                    <td>Low ($<275\ \text{mOsm/kg}$)</td>
+                                    <td><strong>True Hyponatremia.</strong> Always due to defective renal water excretion, usually involving $\text{ADH}$ excess, or excessive fluid intake.</td>
+                                    <td>*Proceed to Step 2* (Volume Status Classification).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="fade-in">Step 2: Classify True (Hypotonic) Hyponatremia by Volume Status</h3>
+                    <p class="fade-in">This classification dictates the treatment strategy.</p>
+                    <div class="table-wrapper fade-in">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>ECF Volume Status</th>
+                                    <th>Pathophysiology</th>
+                                    <th>Key Lab Findings</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Hypovolemic</strong></td>
+                                    <td><strong>Decreased</strong> (Dry mucous membranes, orthostasis, low $\text{CVP}$)</td>
+                                    <td>Loss of $\text{Na}^+$ and water, but $\text{Na}^+$ loss is *relatively greater* than water loss. Effective $\text{ADH}$ is high due to volume depletion.</td>
+                                    <td>$\text{Urine\ Na}^+$ depends on the source of loss: <strong>Renal Loss</strong> ($\text{Urine\ Na}^+ > 20\ \text{mEq/L}$); <strong>Extra-renal</strong> ($\text{Urine\ Na}^+ < 10\ \text{mEq/L}$).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Euvolemic</strong></td>
+                                    <td><strong>Normal</strong> (No edema, no $\text{CVP}$ changes)</td>
+                                    <td>Increased TBW with near-normal total body $\text{Na}^+$. Caused by inappropriate $\text{ADH}$ action ($\text{SIADH}$) or massive water intake.</td>
+                                    <td>$\text{Urine\ Osm} > 100\ \text{mOsm/kg}$. <strong>SIADH:</strong> $\text{Urine\ Na}^+ > 30\ \text{mEq/L}$.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hypervolemic</strong></td>
+                                    <td><strong>Increased</strong> (Edema, pulmonary crackles, $\text{JVD}$)</td>
+                                    <td>Increased TBW and total body $\text{Na}^+$, but $\text{Water}$ gain is *markedly greater* than $\text{Na}^+$ gain. Effective $\text{ADH}$ is high due to low *effective* arterial blood volume.</td>
+                                    <td>$\text{Urine\ Na}^+ < 10\ \text{mEq/L}$ (Kidneys are conserving $\text{Na}^+$).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr>
+
+                    <h2 class="fade-in">3. Clinical Presentation: Severity and Chronicity</h2>
+                    <p class="fade-in">Symptoms are dictated by the rate of $\text{Na}^+$ decline and the severity.</p>
+
+                    <ul class="fade-in">
+                        <li><strong>Acute Hyponatremia ($\le 48\ \text{hours}$):</strong> The brain has <strong>not had time to adapt</strong> by expelling idiogenic osmoles. Water shift is rapid, leading to severe cerebral edema. Symptoms are dramatic: nausea, vomiting, confusion, seizures, and respiratory arrest. <strong>This is a medical emergency.</strong></li>
+                        <li><strong>Chronic Hyponatremia ($> 48\ \text{hours}$):</strong> The brain has adapted to the low osmolality, reducing the risk of herniation but not eliminating it. Symptoms are often subtle: gait instability, risk of falls, slowed reaction time, mild confusion.</li>
+                    </ul>
+                    
+                    <div class="table-wrapper fade-in">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Severity</th>
+                                    <th>Serum $\text{Na}^+$</th>
+                                    <th>Symptoms</th>
+                                    <th>Management Priority</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Severe/Symptomatic</strong></td>
+                                    <td>Varies, typically $<$\strong>120 mEq/L</strong ></td>
+                                    <td>Seizures, coma, severe confusion, non-cardiogenic pulmonary edema.</td>
+                                    <td><strong>Urgent Hypertonic Saline</strong> to prevent cerebral herniation.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Moderate/Asymptomatic</strong></td>
+                                    <td>$125 - 129\ \text{mEq/L}$</td>
+                                    <td>Mild headache, lethargy, muscle cramps, gait disturbance.</td>
+                                    <td>Treat underlying cause; Fluid Restriction.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mild</strong></td>
+                                    <td>$130 - 134\ \text{mEq/L}$</td>
+                                    <td>Often undetectable or subtle.</td>
+                                    <td>Identify and remove causative factor (e.g., drug, lifestyle).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr>
+
+                    <h2 class="fade-in">4. Advanced Management and Nursing Care</h2>
+                    <p class="fade-in">The primary goal of correction is to relieve symptoms while rigorously preventing <strong>Osmotic Demyelination Syndrome (ODS)</strong>.</p>
+                    
+                    <h3 class="fade-in">A. Management of Severe/Symptomatic Hyponatremia</h3>
+                    <p class="fade-in">The most critical decision is whether to use rapid correction.</p>
+                    <ol class="fade-in">
+                        <li><strong>Treatment:</strong> <strong>Hypertonic Saline (3% $\text{NaCl}$)</strong> via central line or large bore peripheral line.</li>
+                        <li><strong>Protocol:</strong> $100\ \text{mL}$ bolus over 10 minutes, repeated up to 2 times.</li>
+                        <li><strong>Goal:</strong> Achieve a rapid increase of <strong>$4-6\ \text{mEq/L}$</strong> in the first few hours to stop the seizures/symptoms.</li>
+                    </ol>
+
+                    <h3 class="fade-in">B. The Absolute Correction Limit: Preventing ODS</h3>
+                    <ul class="fade-in">
+                        <li><strong>Maximum Correction Rate:</strong> The serum $\text{Na}^+$ must not increase by more than <strong>$8\ \text{mEq/L}$</strong> in any 24-hour period (and no more than $18\ \text{mEq/L}$ in 48 hours).</li>
+                        <li><strong>ODS Risk Factors:</strong> Patients with $\text{Na}^+ < 110\ \text{mEq/L}$, chronic alcoholism, malnutrition, liver disease, or hypokalemia are at the highest risk.</li>
+                    </ul>
+
+                    <h3 class="fade-in">C. Management Based on Volume Status</h3>
+                    <div class="table-wrapper fade-in">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>First-Line Treatment</th>
+                                    <th>Nursing/Clinical Rationale</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Hypovolemic</strong></td>
+                                    <td><strong>Isotonic Saline ($0.9\%\ \text{NaCl}$)</strong></td>
+                                    <td>Volume replacement turns off the $\text{ADH}$ stimulus. Once ADH is suppressed, the kidneys will excrete free water and correct the hyponatremia naturally (<strong>Water Diuresis</strong>).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Euvolemic (SIADH)</strong></td>
+                                    <td><strong>Fluid Restriction</strong> (<strong>< 1 L/day</strong>)</td>
+                                    <td>Reducing water intake is the simplest way to reduce TBW. Requires strict I&O and monitoring compliance.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hypervolemic</strong></td>
+                                    <td><strong>Fluid/Na Restriction + Loop Diuretic (Furosemide)</strong></td>
+                                    <td>Loop diuretics inhibit $\text{Na}^+-\text{K}^+-2\text{Cl}^-$ transport, impairing the kidney's ability to concentrate the urine, promoting free water excretion.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3 class="fade-in">D. Advanced Management of SIADH</h3>
+                    <p class="fade-in">If fluid restriction fails or is intolerable:</p>
+                    <ul class="fade-in">
+                        <li><strong>Urea:</strong> An effective osmole that promotes osmotic diuresis (free water loss).</li>
+                        <li><strong>Demeclocycline:</strong> Induces nephrogenic diabetes insipidus (kidney resistance to ADH). <strong>(Rarely used due to toxicity).</strong></li>
+                        <li><strong>Vaptans (Vasopressin Receptor Antagonists):</strong>
+                            <ul>
+                                <li><strong>Mechanism:</strong> Block the $\text{V}_2$ receptor in the renal collecting duct, preventing ADH from inserting aquaporin channels. This causes <strong>aquaresis</strong> (solute-free water excretion).</li>
+                                <li><strong>Examples:</strong> $\text{Tolvaptan}$ (oral, $\text{V}_2$ selective), $\text{Conivaptan}$ (IV, $\text{V}_1$ and $\text{V}_2$).</li>
+                                <li><strong>CRITICAL Nursing Point:</strong> Vaptans carry a significant risk of overcorrection. They must be initiated in a hospital setting with frequent $\text{Na}^+$ monitoring.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                    
+                    <div class="nursing-section fade-in">
+                        <h3>IV. Nursing Responsibilities</h3>
+                        <p>The nurse is the primary safeguard against the two major complications: cerebral edema (from untreated hyponatremia) and ODS (from overly rapid correction).</p>
+
+                        <h4>1. Initial Assessment and Safety</h4>
+                        <p><strong>Frequent Neuro Checks:</strong> Perform and document frequent (e.g., every 1-2 hours) neurological assessments, noting any changes in mental status, orientation, reflexes, or onset of headache/nausea. Protect the airway if the patient is severely altered.</p>
+                        <p><strong>Seizure Precautions:</strong> Institute seizure precautions immediately for any patient with $\text{Na}^+ < 125\ \text{mEq/L}$ or any neurological symptoms.</p>
+                        <p><strong>Volume Status:</strong> Assess and document vital signs, orthostatic changes, skin turgor, presence of edema (Hypervolemic), or dry mucous membranes (Hypovolemic).</p>
+                        
+                        <h4>2. Monitoring and Treatment Implementation</h4>
+                        <p><strong>Accurate IV Administration:</strong> Administer prescribed IV fluids (3% $\text{NaCl}$ or 0.9% $\text{NaCl}$) only via an infusion pump and meticulously verify the infusion rate with the provider's order.</p>
+                        <p><strong>Hourly Output and Daily Weights:</strong> Strictly monitor and record Intake and Output (I&O) and daily weights to assess fluid balance and the effectiveness of fluid restriction or replacement therapy.</p>
+                        <p><strong>Critical Lab Monitoring:</strong> Timely collection and reporting of serum $\text{Na}^+$ is paramount. Ensure blood is drawn exactly at the scheduled intervals (e.g., every 2 hours during 3% $\text{NaCl}$ infusion) and immediately alert the provider if the correction rate exceeds the safe limit ($>8\ \text{mEq/L/24 hrs}$).</p>
+                        
+                        <h4>3. Education and Prevention</h4>
+                        <p><strong>Fluid Restriction Compliance:</strong> Educate euvolemic and hypervolemic patients on the rationale and exact limits of their fluid restriction, offering strategies to manage thirst (e.g., frequent oral care, hard candy).</p>
+                        <p><strong>Medication Review:</strong> Review all medications that could be contributing to hyponatremia (e.g., certain antidepressants, antiepileptics, thiazide diuretics) and ensure the provider is aware.</p>
+                    </div>
+
+                </div>
+            </div>
+        `
+    },       
 
     hypernatremia: {
         title: "Hypernatremia: The Dehydrated Brain",
