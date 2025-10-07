@@ -1523,6 +1523,29 @@
     box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
 }
 
+         /* Style for Nursing Notebook */
+.external-link-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
+    color: var(--text-color);
+    padding: 10px;
+    text-align: center;
+    aspect-ratio: 1 / 1;
+}
+
+.external-link-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15);
+}
+
         </style>
      <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -1535,6 +1558,8 @@
                 
           <!-- Job Portal Card -->
           <a href="#job-portal" class="calculator-card" data-screen="job-portal-screen"><div class="icon">🧑‍⚕️</div><div class="name" data-lang-key="job_portal"></div></a>
+            <!-- Nursing Notebook Card -->
+          <a href="nursing_notebook.html" class="external-link-card"><div class="icon">📘</div><div class="name">Nursing Notebook</div></a>
           <!-- Critical Condition Management Card -->
           <a href="#critical-condition" class="calculator-card" data-screen="critical-condition-screen"><div class="icon">🤒</div> <div class="name" data-lang-key="critical_condition_management"></div></a>
           <!-- Critical Procedure Criteria Card -->
@@ -2412,7 +2437,7 @@
             'en': { 
                 appName: 'InstaNurse', adSpace: '', footer_copyright: '2025@InstaNurse: All Rights Reserved.', privacy_policy: 'Privacy Policy', terms_conditions: 'Terms & Condition', 
                 drug_calc: 'Drug Calculator', bmi_calc: 'BMI Calculator',appName: 'InstaNurse', 
-                job_portal: 'Job Portal', 
+                job_portal: 'Job Portal', nursing_notebook: 'Nursing Notebook',
                 government_jobs: '𝐆𝐨𝐯𝐞𝐫𝐧𝐦𝐞𝐧𝐭 𝐉𝐨𝐛𝐬',   critical_condition_management: 'Critical Conditions', procedure_criteria: 'Procedure Criteria', age_calc: 'Age Calculator', preg_calc: 'Pregnancy EDD', tbsa_calc: 'TBSA Burn Calculator', mass_calc: 'Unit Converter', milestone_calc: 'Pediatric Milestones', menstrual_calc: 'Menstrual Cycle', pincode_finder: 'Pincode Finder', fluid_intake_calc: 'Fluid Intake Calculator', 
                 biomedical_waste: 'Biomedical Waste',
     health_advisory_title: 'Health Advisory: Risks of Insufficient Intake',
@@ -2512,7 +2537,7 @@ InstaNurse (job4nurse) is not responsible for any personal data you submit to th
                 appName: 'इंस्टा नर्स', adSpace: '', footer_copyright: '२०२५@इंस्टा नर्स: सर्वाधिकार सुरक्षित।', privacy_policy: 'गोपनीयता नीति', terms_conditions: 'नियम और शर्तें', 
                 drug_calc: 'दवा कैलकुलेटर', bmi_calc: 'बीएमआई कैलकुलेटर',appName: 'इंस्टा नर्स',
                  government_jobs: 'सरकारी नौकरियां',
-                job_portal: 'नौकरी पोर्टल', age_calc: 'आयु कैलकुलेटर', critical_procedure_criteria: 'गंभीर प्रक्रिया मापदंड', preg_calc: 'गर्भावस्था EDD', tbsa_calc: 'टीबीएसए बर्न कैलकुलेटर', mass_calc: 'यूनिट कनवर्टर', milestone_calc: 'बाल विकास मील के पत्थर', menstrual_calc: 'मासिक धर्म चक्र', pincode_finder: 'पिनकोड खोजक',
+                job_portal: 'नौकरी पोर्टल', nursing_notebook: 'नर्सिंग नोट', age_calc: 'आयु कैलकुलेटर', critical_procedure_criteria: 'गंभीर प्रक्रिया मापदंड', preg_calc: 'गर्भावस्था EDD', tbsa_calc: 'टीबीएसए बर्न कैलकुलेटर', mass_calc: 'यूनिट कनवर्टर', milestone_calc: 'बाल विकास मील के पत्थर', menstrual_calc: 'मासिक धर्म चक्र', pincode_finder: 'पिनकोड खोजक',
                 biomedical_waste: 'बायोमेडिकल कचरा',
     fluid_intake_calc: 'द्रव सेवन कैलकुलेटर',
     health_advisory_title: 'स्वास्थ्य सलाह: अपर्याप्त सेवन के जोखिम',
